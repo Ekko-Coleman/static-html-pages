@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truefootage Cycle 84 Report | Jan 22-29, 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gradient-start: #6366f1;
+            --gradient-mid: #8b5cf6;
+            --gradient-end: #ec4899;
+            --accent-cyan: #06b6d4;
+            --accent-amber: #f59e0b;
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --bg-dark: #0f0f23;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #252542;
+        }
+
+        * { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #16213e 50%, #0f0f23 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 50%, rgba(236, 72, 153, 0.15) 100%);
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.9), rgba(37, 37, 66, 0.7));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(139, 92, 246, 0.6);
+            box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.3);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .glow-emerald { box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
+        .glow-cyan { box-shadow: 0 0 30px rgba(6, 182, 212, 0.3); }
+        .glow-amber { box-shadow: 0 0 30px rgba(245, 158, 11, 0.3); }
+        .glow-rose { box-shadow: 0 0 30px rgba(244, 63, 94, 0.3); }
+
+        .fun-fact {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        .ticket-link {
+            color: #818cf8;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .ticket-link:hover {
+            color: #c4b5fd;
+            text-decoration: underline;
+        }
+
+        .nav-pill {
+            transition: all 0.3s ease;
+        }
+        .nav-pill:hover, .nav-pill.active {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid));
+            color: white;
+        }
+
+        .contributor-card {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.9), rgba(37, 37, 66, 0.7));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+        .contributor-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: scale(1.02);
+        }
+
+        .sparkle {
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            80%, 100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        @media print {
+            body { background: white !important; }
+            .glass-card { background: white !important; border: 1px solid #e5e7eb !important; }
+            .gradient-text { -webkit-text-fill-color: #4f46e5 !important; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="text-gray-100">
+    <!-- Floating Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl float"></div>
+        <div class="absolute top-40 right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl float" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-20 left-1/3 w-80 h-80 bg-pink-500/10 rounded-full blur-3xl float" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 py-8">
+        <!-- Header -->
+        <header class="glass-card rounded-3xl p-8 mb-8 hero-gradient">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-4xl sparkle">&#9889;</span>
+                        <h1 class="text-4xl lg:text-5xl font-black gradient-text">Cycle 84</h1>
+                    </div>
+                    <p class="text-xl text-gray-400 font-medium">Truefootage Engineering</p>
+                    <p class="text-gray-500 mt-1 mono">Jan 22 - Jan 29, 2026 <span class="text-indigo-400">&#8226;</span> 5 working days</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="stat-card rounded-2xl p-4 text-center glow-emerald">
+                        <div class="text-3xl font-black text-emerald-400">94.6%</div>
+                        <div class="text-sm text-gray-400">Completion Rate</div>
+                    </div>
+                    <div class="stat-card rounded-2xl p-4 text-center glow-cyan">
+                        <div class="text-3xl font-black text-cyan-400">88 pts</div>
+                        <div class="text-sm text-gray-400">Delivered</div>
+                    </div>
+                    <button onclick="window.print()" class="no-print stat-card rounded-2xl px-6 py-4 text-indigo-400 hover:text-white font-semibold transition-all">
+                        &#128196; Export PDF
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Fun Fact Banner -->
+        <div class="fun-fact rounded-2xl p-4 mb-8 flex items-center gap-4">
+            <span class="text-2xl">&#127942;</span>
+            <p class="text-cyan-300"><strong>Fun Fact:</strong> This cycle, the team wrote <span class="text-white font-bold">7,948 lines of code</span> - that's roughly the length of Shakespeare's Hamlet! <span class="text-gray-400">(And hopefully fewer tragedies)</span></p>
+        </div>
+
+        <!-- Executive Summary KPIs -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">&#128202;</span> Executive Summary
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Issues Completed -->
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">&#9989;</span>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium bg-rose-500/20 text-rose-400">&#8595; 14 vs C83</span>
+                    </div>
+                    <div class="text-4xl font-black text-white mb-1">48</div>
+                    <div class="text-gray-400">Issues Completed</div>
+                    <div class="mt-3 text-sm text-gray-500">of 52 total <span class="text-gray-600">(92.3%)</span></div>
+                </div>
+
+                <!-- Points Delivered -->
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">&#127919;</span>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium bg-rose-500/20 text-rose-400">&#8595; 10 vs C83</span>
+                    </div>
+                    <div class="text-4xl font-black text-white mb-1">88</div>
+                    <div class="text-gray-400">Points Delivered</div>
+                    <div class="mt-3 text-sm text-gray-500">of 93 planned <span class="text-emerald-500">(94.6%)</span></div>
+                </div>
+
+                <!-- Team Velocity -->
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">&#128640;</span>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium bg-emerald-500/20 text-emerald-400">17.6/day</span>
+                    </div>
+                    <div class="text-4xl font-black text-white mb-1">6.8</div>
+                    <div class="text-gray-400">Avg pts/contributor</div>
+                    <div class="mt-3 text-sm text-gray-500">13 active contributors</div>
+                </div>
+
+                <!-- Carryover -->
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">&#128230;</span>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium bg-emerald-500/20 text-emerald-400">&#8595; Low</span>
+                    </div>
+                    <div class="text-4xl font-black text-white mb-1">1</div>
+                    <div class="text-gray-400">Carryover Issues</div>
+                    <div class="mt-3 text-sm text-gray-500">1 pt to Cycle 85</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cycle Comparison -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">&#128200;</span> Cycle Comparison
+            </h2>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4 text-gray-300">Cycle 84 vs Cycle 83</h3>
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left text-gray-500 text-sm">
+                                    <th class="pb-3">Metric</th>
+                                    <th class="pb-3 text-right">C84</th>
+                                    <th class="pb-3 text-right">C83</th>
+                                    <th class="pb-3 text-right">Delta</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-300">
+                                <tr class="border-t border-gray-700/50">
+                                    <td class="py-3">Issues Completed</td>
+                                    <td class="text-right font-mono">48</td>
+                                    <td class="text-right font-mono text-gray-500">62</td>
+                                    <td class="text-right font-mono text-rose-400">-14</td>
+                                </tr>
+                                <tr class="border-t border-gray-700/50">
+                                    <td class="py-3">Points Delivered</td>
+                                    <td class="text-right font-mono">88</td>
+                                    <td class="text-right font-mono text-gray-500">98</td>
+                                    <td class="text-right font-mono text-rose-400">-10</td>
+                                </tr>
+                                <tr class="border-t border-gray-700/50">
+                                    <td class="py-3">Completion Rate</td>
+                                    <td class="text-right font-mono">94.6%</td>
+                                    <td class="text-right font-mono text-gray-500">88.3%</td>
+                                    <td class="text-right font-mono text-emerald-400">+6.3%</td>
+                                </tr>
+                                <tr class="border-t border-gray-700/50">
+                                    <td class="py-3">Total Scope</td>
+                                    <td class="text-right font-mono">93 pts</td>
+                                    <td class="text-right font-mono text-gray-500">111 pts</td>
+                                    <td class="text-right font-mono text-cyan-400">-16%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <canvas id="comparisonChart" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Fun Insight -->
+                <div class="mt-6 fun-fact rounded-xl p-4">
+                    <span class="text-xl mr-2">&#128161;</span>
+                    <span class="text-cyan-300"><strong>Insight:</strong> While we delivered fewer points than C83, our completion rate jumped by 6.3%! The team is getting better at <em>finishing</em> what we start. Quality over quantity!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- GitLab Stats -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">&#128025;</span> GitLab Codebase Stats
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="stat-card rounded-2xl p-6 glow-cyan">
+                    <div class="text-3xl mb-2">&#128221;</div>
+                    <div class="text-3xl font-black text-cyan-400">30</div>
+                    <div class="text-gray-400">Commits</div>
+                </div>
+                <div class="stat-card rounded-2xl p-6 glow-emerald">
+                    <div class="text-3xl mb-2">&#128279;</div>
+                    <div class="text-3xl font-black text-emerald-400">24</div>
+                    <div class="text-gray-400">MRs Merged</div>
+                </div>
+                <div class="stat-card rounded-2xl p-6 glow-amber">
+                    <div class="text-3xl mb-2">&#10133;</div>
+                    <div class="text-3xl font-black text-green-400">+7,948</div>
+                    <div class="text-gray-400">Lines Added</div>
+                </div>
+                <div class="stat-card rounded-2xl p-6 glow-rose">
+                    <div class="text-3xl mb-2">&#10134;</div>
+                    <div class="text-3xl font-black text-rose-400">-2,093</div>
+                    <div class="text-gray-400">Lines Removed</div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-300">Code Contributions by Author</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-4">
+                        <span class="w-40 text-gray-400 truncate">Mike Coleman</span>
+                        <div class="flex-1 h-6 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full progress-bar rounded-full" style="width: 63%"></div>
+                        </div>
+                        <span class="mono text-emerald-400 w-24 text-right">+3,743 net</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="w-40 text-gray-400 truncate">Daniel Sorichetti</span>
+                        <div class="flex-1 h-6 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-indigo-500 rounded-full" style="width: 13.5%"></div>
+                        </div>
+                        <span class="mono text-emerald-400 w-24 text-right">+806 net</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="w-40 text-gray-400 truncate">Samson Liu</span>
+                        <div class="flex-1 h-6 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-purple-500 rounded-full" style="width: 11.2%"></div>
+                        </div>
+                        <span class="mono text-emerald-400 w-24 text-right">+667 net</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="w-40 text-gray-400 truncate">Maksym Butsykin</span>
+                        <div class="flex-1 h-6 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyan-500 rounded-full" style="width: 4.5%"></div>
+                        </div>
+                        <span class="mono text-emerald-400 w-24 text-right">+267 net</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="w-40 text-gray-400 truncate">Real Limoges</span>
+                        <div class="flex-1 h-6 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-rose-500 rounded-full" style="width: 1.8%"></div>
+                        </div>
+                        <span class="mono text-rose-400 w-24 text-right">-108 net</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 fun-fact rounded-xl p-4">
+                    <span class="text-xl mr-2">&#129302;</span>
+                    <span class="text-cyan-300"><strong>Code Cleaner Award:</strong> Real went net-negative this cycle - deleting more code than adding! The best code is sometimes no code.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Breakdown -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">&#128193;</span> Project Breakdown
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-white">Opendoor</h3>
+                        <span class="text-emerald-400 font-bold">100%</span>
+                    </div>
+                    <div class="w-full h-2 bg-gray-700 rounded-full mb-4">
+                        <div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-400">
+                        <span>8/8 issues</span>
+                        <span>19/19 pts</span>
+                    </div>
+                </div>
+
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-white">Automated Heatmap</h3>
+                        <span class="text-emerald-400 font-bold">100%</span>
+                    </div>
+                    <div class="w-full h-2 bg-gray-700 rounded-full mb-4">
+                        <div class="h-full bg-cyan-500 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-400">
+                        <span>4/4 issues</span>
+                        <span>8/8 pts</span>
+                    </div>
+                </div>
+
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-white">ML Service</h3>
+                        <span class="text-emerald-400 font-bold">100%</span>
+                    </div>
+                    <div class="w-full h-2 bg-gray-700 rounded-full mb-4">
+                        <div class="h-full bg-purple-500 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-400">
+                        <span>2/2 issues</span>
+                        <span>3/3 pts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 fun-fact rounded-xl p-4">
+                <span class="text-xl mr-2">&#127881;</span>
+                <span class="text-cyan-300"><strong>Project Perfect:</strong> All named projects hit 100% completion! Opendoor workflow led with 19 points delivered.</span>
+            </div>
+        </section>
+
+        <!-- Team Performance -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">&#128101;</span> Team Performance
+            </h2>
+
+            <!-- Top Performers -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Gold -->
+                <div class="contributor-card rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl"></div>
+                    <div class="relative">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-4xl">&#129351;</span>
+                            <div>
+                                <div class="text-xl font-bold text-yellow-400">Samson Liu</div>
+                                <div class="text-sm text-gray-500">Points Champion</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div>
+                                <div class="text-2xl font-black text-white">20</div>
+                                <div class="text-xs text-gray-500">Points</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-black text-white">9</div>
+                                <div class="text-xs text-gray-500">Issues</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Silver -->
+                <div class="contributor-card rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gray-400/10 rounded-full blur-2xl"></div>
+                    <div class="relative">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-4xl">&#129352;</span>
+                            <div>
+                                <div class="text-xl font-bold text-gray-300">Mike Coleman</div>
+                                <div class="text-sm text-gray-500">Code Champion</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div>
+                                <div class="text-2xl font-black text-white">13</div>
+                                <div class="text-xs text-gray-500">Points</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-black text-white">5</div>
+                                <div class="text-xs text-gray-500">Issues</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bronze -->
+                <div class="contributor-card rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl"></div>
+                    <div class="relative">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-4xl">&#129353;</span>
+                            <div>
+                                <div class="text-xl font-bold text-orange-400">Real Limoges</div>
+                                <div class="text-sm text-gray-500">ML Specialist</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div>
+                                <div class="text-2xl font-black text-white">11</div>
+                                <div class="text-xs text-gray-500">Points</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-black text-white">6</div>
+                                <div class="text-xs text-gray-500">Issues</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Team Table -->
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-800/50">
+                        <tr class="text-left text-gray-400 text-sm">
+                            <th class="px-6 py-4">Contributor</th>
+                            <th class="px-6 py-4 text-center">Issues</th>
+                            <th class="px-6 py-4 text-center">Points</th>
+                            <th class="px-6 py-4 text-center">Completion</th>
+                            <th class="px-6 py-4 text-center">Pts/Day</th>
+                            <th class="px-6 py-4">Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700/50">
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Samson Liu</td>
+                            <td class="px-6 py-4 text-center mono">9/9</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">20</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">4.0</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Mike Coleman</td>
+                            <td class="px-6 py-4 text-center mono">5/5</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">13</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">2.6</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Real Limoges</td>
+                            <td class="px-6 py-4 text-center mono">6/7</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">11</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 text-sm">92%</span></td>
+                            <td class="px-6 py-4 text-center mono">2.2</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-amber-500 rounded-full" style="width: 92%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">JC Arbelbide</td>
+                            <td class="px-6 py-4 text-center mono">6/6</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">9</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">1.8</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Cody Stoltman</td>
+                            <td class="px-6 py-4 text-center mono">2/2</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">8</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">1.6</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Daniel Sorichetti</td>
+                            <td class="px-6 py-4 text-center mono">5/5</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">8</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">1.6</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Mariusz Wojakowski</td>
+                            <td class="px-6 py-4 text-center mono">7/9</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">7</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 text-sm">70%</span></td>
+                            <td class="px-6 py-4 text-center mono">1.4</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-amber-500 rounded-full" style="width: 70%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Gino Trombetti</td>
+                            <td class="px-6 py-4 text-center mono">1/1</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">3</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">0.6</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Aleksander Jaworski</td>
+                            <td class="px-6 py-4 text-center mono">3/3</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">3</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">0.6</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Colin Maretsky</td>
+                            <td class="px-6 py-4 text-center mono">1/1</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">2</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">0.4</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Michal Raczyk</td>
+                            <td class="px-6 py-4 text-center mono">1/1</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">2</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">0.4</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Maksym Butsykin</td>
+                            <td class="px-6 py-4 text-center mono">1/1</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">1</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">100%</span></td>
+                            <td class="px-6 py-4 text-center mono">0.2</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 100%"></div></div></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">Will Fried</td>
+                            <td class="px-6 py-4 text-center mono">1/2</td>
+                            <td class="px-6 py-4 text-center mono text-emerald-400">1</td>
+                            <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 text-sm">50%</span></td>
+                            <td class="px-6 py-4 text-center mono">0.2</td>
+                            <td class="px-6 py-4"><div class="w-full h-2 bg-gray-700 rounded-full"><div class="h-full bg-amber-500 rounded-full" style="width: 50%"></div></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 fun-fact rounded-xl p-4">
+                <span class="text-xl mr-2">&#128175;</span>
+                <span class="text-cyan-300"><strong>Team Stat:</strong> 10 out of 13 contributors achieved 100% completion rate this cycle. That's <span class="text-white font-bold">77% of the team</span> with perfect records!</span>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">&#128200;</span> Visualizations
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-300">Daily Progress</h3>
+                    <canvas id="dailyProgressChart" height="200"></canvas>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-300">Points by Contributor</h3>
+                    <canvas id="contributorChart" height="200"></canvas>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-300">Velocity Trend (Last 6 Cycles)</h3>
+                    <canvas id="velocityTrendChart" height="200"></canvas>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-300">Issue Status Distribution</h3>
+                    <canvas id="statusChart" height="200"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accomplishments -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">&#127942;</span> Key Accomplishments
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Feature Enhancements -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <span class="text-xl">&#10024;</span> Feature Enhancements
+                    </h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6806" class="ticket-link mono">TF-6806</a> Create new Time to Sale PDF export</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6805" class="ticket-link mono">TF-6805</a> Create new Time of Sale API Service and Hook</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6906" class="ticket-link mono">TF-6906</a> Hook for representative photos on subject/comps</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6907" class="ticket-link mono">TF-6907</a> Generic image toggle component</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6997" class="ticket-link mono">TF-6997</a> Add more school district boundaries to map</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6888" class="ticket-link mono">TF-6888</a> Return suggested filters from automated heatmap</li>
+                    </ul>
+                </div>
+
+                <!-- Bug Fixes -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <span class="text-xl">&#128027;</span> Bug Fixes & Stability
+                    </h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-7002" class="ticket-link mono">TF-7002</a> Fix USPAP Compliance form bugs</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6787" class="ticket-link mono">TF-6787</a> Fix reconciliation grid after adjustment support</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6647" class="ticket-link mono">TF-6647</a> Fix beds/baths total calculation</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6995" class="ticket-link mono">TF-6995</a> Gate fixes for adjustment access</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6991" class="ticket-link mono">TF-6991</a> Gate fixes on grid cleanup tab</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-3466" class="ticket-link mono">TF-3466</a> Unknown bug on TT session (fixed!)</li>
+                    </ul>
+                </div>
+
+                <!-- Infrastructure -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <span class="text-xl">&#128295;</span> Infrastructure & Backend
+                    </h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6994" class="ticket-link mono">TF-6994</a> Refactor workers for Opendoor expansion</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6914" class="ticket-link mono">TF-6914</a> Terraform Bubble deployment</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6819" class="ticket-link mono">TF-6819</a> Setup Composer DAG for BQ data sync</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6983" class="ticket-link mono">TF-6983</a> Docker compose for REdistribute locally</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-7009" class="ticket-link mono">TF-7009</a> Clean up property listings workflows</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6927" class="ticket-link mono">TF-6927</a> Add concession_dollars as feature</li>
+                    </ul>
+                </div>
+
+                <!-- Data & ML -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <span class="text-xl">&#128202;</span> Data & ML
+                    </h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-7000" class="ticket-link mono">TF-7000</a> Debug and improve polygon creation</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-7001" class="ticket-link mono">TF-7001</a> Compare and contrast suggested filters</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6638" class="ticket-link mono">TF-6638</a> Switch to enums in Pandera models</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-5783" class="ticket-link mono">TF-5783</a> SPIKE: Error handling for ML Service</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6998" class="ticket-link mono">TF-6998</a> Update water/lakefront adjustment ranges</li>
+                        <li><a href="https://linear.app/truefootage-eng/issue/TF-6803" class="ticket-link mono">TF-6803</a> Plan for KBB listing tracking w/ BQ</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insights & Recommendations -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">&#128161;</span> Insights & Next Cycle Suggestions
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-emerald-400">&#9989; What Went Well</h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <span class="text-emerald-400 mt-1">&#8226;</span>
+                            <span><strong>Excellent completion rate (94.6%)</strong> - 6.3% higher than last cycle despite lower scope</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-emerald-400 mt-1">&#8226;</span>
+                            <span><strong>Project-focused delivery</strong> - All named projects hit 100% completion</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-emerald-400 mt-1">&#8226;</span>
+                            <span><strong>Minimal carryover</strong> - Only 1 issue (1 pt) carried to C85</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-emerald-400 mt-1">&#8226;</span>
+                            <span><strong>Strong individual performance</strong> - 77% of team at 100% completion</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-amber-400">&#9888;&#65039; Areas for Attention</h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <span class="text-amber-400 mt-1">&#8226;</span>
+                            <span><strong>Lower overall velocity</strong> - 88 pts vs 98 pts last cycle (-10.2%)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-amber-400 mt-1">&#8226;</span>
+                            <span><strong>Fewer issues tackled</strong> - 48 vs 62 last cycle (-22.6%)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-amber-400 mt-1">&#8226;</span>
+                            <span><strong>Scope concentration</strong> - 62% of points from untagged issues</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 lg:col-span-2">
+                    <h3 class="text-lg font-semibold mb-4 text-cyan-400">&#128640; Recommendations for Cycle 85</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start gap-3">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 text-sm">1</span>
+                                <span><strong>Maintain completion focus</strong> - The higher completion rate suggests better estimation. Keep it up!</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 text-sm">2</span>
+                                <span><strong>Consider slightly larger scope</strong> - Team has capacity for ~95-100 pts based on history</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 text-sm">3</span>
+                                <span><strong>Continue Opendoor momentum</strong> - Project delivered 19 pts with 100% completion</span>
+                            </li>
+                        </ul>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start gap-3">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 text-sm">4</span>
+                                <span><strong>Tag more issues to projects</strong> - Better visibility into where effort goes</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 text-sm">5</span>
+                                <span><strong>Address backlog item TF-6729</strong> - Only non-complete issue from C84</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capacity Planning -->
+            <div class="mt-6 glass-card rounded-2xl p-6">
+                <h3 class="text-lg font-semibold mb-4 text-purple-400">&#128302; Capacity Planning for Cycle 85</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-purple-400">~95 pts</div>
+                        <div class="text-gray-400">Recommended Scope</div>
+                        <div class="text-sm text-gray-500 mt-1">Based on 6-cycle average</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-purple-400">~7.3 pts</div>
+                        <div class="text-gray-400">Per Contributor</div>
+                        <div class="text-sm text-gray-500 mt-1">With 13 active members</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-purple-400">90-100%</div>
+                        <div class="text-gray-400">Target Completion</div>
+                        <div class="text-sm text-gray-500 mt-1">Maintain current momentum</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="glass-card rounded-2xl p-6 text-center">
+            <p class="text-gray-400 mb-2">
+                Generated with &#10084;&#65039; by Claude Code for <a href="https://linear.app/truefootage-eng/team/TRU/cycles" class="ticket-link">Truefootage Engineering</a>
+            </p>
+            <p class="text-gray-600 text-sm">
+                Cycle 84 | January 22-29, 2026 | 5 working days
+            </p>
+            <div class="mt-4 fun-fact rounded-xl p-3 inline-block">
+                <span class="text-xl mr-2">&#127758;</span>
+                <span class="text-cyan-300 text-sm"><strong>Final Fun Fact:</strong> If each point were a mile, we traveled 88 miles this week - that's the distance from San Francisco to Santa Cruz!</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Chart.js configuration
+        Chart.defaults.color = '#9ca3af';
+        Chart.defaults.borderColor = 'rgba(99, 102, 241, 0.2)';
+
+        // Daily Progress Chart
+        new Chart(document.getElementById('dailyProgressChart'), {
+            type: 'line',
+            data: {
+                labels: ['Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue'],
+                datasets: [{
+                    label: 'Completed Points',
+                    data: [10, 22, 24, 25, 34, 84, 88],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Total Scope',
+                    data: [158, 173, 180, 180, 191, 194, 199],
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Contributor Chart
+        new Chart(document.getElementById('contributorChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Samson', 'Mike', 'Real', 'JC', 'Cody', 'Daniel', 'Mariusz'],
+                datasets: [{
+                    label: 'Points Delivered',
+                    data: [20, 13, 11, 9, 8, 8, 7],
+                    backgroundColor: [
+                        'rgba(234, 179, 8, 0.8)',
+                        'rgba(168, 162, 158, 0.8)',
+                        'rgba(251, 146, 60, 0.8)',
+                        'rgba(99, 102, 241, 0.8)',
+                        'rgba(139, 92, 246, 0.8)',
+                        'rgba(236, 72, 153, 0.8)',
+                        'rgba(6, 182, 212, 0.8)'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // Velocity Trend Chart
+        new Chart(document.getElementById('velocityTrendChart'), {
+            type: 'line',
+            data: {
+                labels: ['C79', 'C80', 'C81', 'C82', 'C83', 'C84'],
+                datasets: [{
+                    label: 'Points Completed',
+                    data: [78, 55, 130, 130, 99, 88],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Status Distribution Chart
+        new Chart(document.getElementById('statusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed (QA+Prod)', 'Canceled', 'Backlog'],
+                datasets: [{
+                    data: [48, 3, 1],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(244, 63, 94, 0.8)',
+                        'rgba(100, 116, 139, 0.8)'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+
+        // Comparison Chart
+        new Chart(document.getElementById('comparisonChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Issues', 'Points', 'Completion %'],
+                datasets: [{
+                    label: 'Cycle 84',
+                    data: [48, 88, 94.6],
+                    backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                    borderRadius: 8
+                }, {
+                    label: 'Cycle 83',
+                    data: [62, 98, 88.3],
+                    backgroundColor: 'rgba(100, 116, 139, 0.5)',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

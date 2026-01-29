@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truefootage Cycle 82 Report | Jan 8-15, 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary-50: #EEF2FF;
+            --primary-100: #E0E7FF;
+            --primary-500: #6366F1;
+            --primary-600: #4F46E5;
+            --primary-700: #4338CA;
+            --success-50: #ECFDF5;
+            --success-500: #10B981;
+            --success-600: #059669;
+            --warning-50: #FFFBEB;
+            --warning-500: #F59E0B;
+            --warning-600: #D97706;
+            --danger-50: #FEF2F2;
+            --danger-500: #F43F5E;
+            --danger-600: #DC2626;
+            --info-500: #3B82F6;
+            --gray-50: #F8FAFC;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E1;
+            --gray-400: #94A3B8;
+            --gray-500: #64748B;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1E293B;
+            --gray-900: #0F172A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            color: white;
+            padding: 48px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .header-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-export {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-export:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 12px 0;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-600);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        .nav-tab.active {
+            background: var(--primary-100);
+            color: var(--primary-700);
+        }
+
+        /* Main Content */
+        main {
+            padding: 32px 0;
+        }
+
+        section {
+            margin-bottom: 48px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+
+        /* Executive Summary */
+        .executive-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 32px;
+        }
+
+        .summary-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--gray-700);
+            margin-bottom: 24px;
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .kpi-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .kpi-icon.success { background: var(--success-50); }
+        .kpi-icon.warning { background: var(--warning-50); }
+        .kpi-icon.info { background: var(--primary-50); }
+        .kpi-icon.danger { background: var(--danger-50); }
+
+        .kpi-delta {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .kpi-delta.up {
+            background: var(--success-50);
+            color: var(--success-600);
+        }
+
+        .kpi-delta.down {
+            background: var(--danger-50);
+            color: var(--danger-600);
+        }
+
+        .kpi-delta.neutral {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .kpi-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .kpi-label {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-bottom: 16px;
+        }
+
+        .kpi-progress {
+            height: 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .kpi-progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .kpi-progress-bar.success { background: var(--success-500); }
+        .kpi-progress-bar.warning { background: var(--warning-500); }
+        .kpi-progress-bar.info { background: var(--primary-500); }
+        .kpi-progress-bar.danger { background: var(--danger-500); }
+
+        /* Charts */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 320px;
+        }
+
+        /* Team Table */
+        .table-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 24px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        td {
+            padding: 16px 24px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        .contributor-name {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .progress-mini {
+            width: 100px;
+            height: 6px;
+            background: var(--gray-100);
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        .progress-mini-bar {
+            height: 100%;
+            background: var(--success-500);
+            border-radius: 3px;
+        }
+
+        /* Accomplishments */
+        .accomplishments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .accomplishment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .accomplishment-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .accomplishment-emoji {
+            font-size: 28px;
+        }
+
+        .accomplishment-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .accomplishment-count {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .accomplishment-list {
+            list-style: none;
+        }
+
+        .accomplishment-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 14px;
+        }
+
+        .accomplishment-item:last-child {
+            border-bottom: none;
+        }
+
+        .ticket-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--primary-600);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .ticket-id:hover {
+            text-decoration: underline;
+        }
+
+        /* Recommendations */
+        .recommendations-card {
+            background: linear-gradient(135deg, var(--primary-50) 0%, white 100%);
+            border: 1px solid var(--primary-100);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .recommendations-list {
+            list-style: none;
+            counter-reset: recommendations;
+        }
+
+        .recommendation-item {
+            counter-increment: recommendations;
+            padding: 12px 0;
+            padding-left: 40px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .recommendation-item::before {
+            content: counter(recommendations);
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 28px;
+            height: 28px;
+            background: var(--primary-600);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Insights Cards */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .insight-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary-500);
+        }
+
+        .insight-card.success {
+            border-left-color: var(--success-500);
+        }
+
+        .insight-card.warning {
+            border-left-color: var(--warning-500);
+        }
+
+        .insight-card.danger {
+            border-left-color: var(--danger-500);
+        }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .insight-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .insight-description {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-900);
+            color: white;
+            padding: 32px 0;
+            margin-top: 64px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-brand {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        /* Comparison Badge */
+        .comparison-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--gray-100);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+
+        /* Note banner */
+        .note-banner {
+            background: var(--warning-50);
+            border: 1px solid var(--warning-500);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .note-banner-icon {
+            font-size: 20px;
+        }
+
+        .note-banner-text {
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav, .btn-export { display: none; }
+            .header { padding: 24px 0; }
+            .chart-container { height: 280px; }
+            section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-top">
+                    <div>
+                        <h1>Cycle 82 Report</h1>
+                        <div class="header-meta">
+                            <span>
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+                                Truefootage Engineering
+                            </span>
+                            <span>
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+                                Jan 8 - Jan 15, 2026
+                            </span>
+                            <span>
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+                                5 Working Days
+                            </span>
+                            <span class="comparison-badge">
+                                <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/></svg>
+                                Compared to Cycle 81
+                            </span>
+                        </div>
+                    </div>
+                    <button class="btn-export" onclick="window.print()">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"/></svg>
+                        Export PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-tabs">
+                <a href="#overview" class="nav-tab active">Overview</a>
+                <a href="#charts" class="nav-tab">Charts</a>
+                <a href="#accomplishments" class="nav-tab">Accomplishments</a>
+                <a href="#team" class="nav-tab">Team Performance</a>
+                <a href="#velocity" class="nav-tab">Velocity Trends</a>
+                <a href="#insights" class="nav-tab">Insights</a>
+                <a href="#planning" class="nav-tab">Planning</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Note about GitLab -->
+            <div class="note-banner">
+                <span class="note-banner-icon">i</span>
+                <div class="note-banner-text">
+                    <strong>Note:</strong> GitLab integration was requested but is not currently available. Code metrics (commits, merge requests, lines changed) are not included in this report. Contact your administrator to set up the GitLab MCP server.
+                </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <section id="overview">
+                <div class="executive-summary">
+                    <h2 class="section-title" style="margin-bottom: 16px;">Executive Summary</h2>
+                    <p class="summary-text">
+                        <strong>Cycle 82</strong> achieved a <strong>67% completion rate</strong> (130 of 193 points), matching Cycle 81's output. 
+                        The team delivered <strong>130 story points</strong> across <strong>89 completed issues</strong>.
+                        There is <strong>63 points of carryover</strong> into the next cycle.
+                    </p>
+                    <p class="summary-text">
+                        Key highlights include significant progress on the <strong>OpenDoor Workflow</strong> implementation, 
+                        <strong>automated heatmap adjustments</strong> feature completion, and critical <strong>location/view adjustment enhancements</strong>.
+                        The team also tackled infrastructure improvements including BigQuery integrations and REDistribute engine updates.
+                    </p>
+                    <p class="summary-text">
+                        <strong>Daniel Sorichetti</strong> led point delivery with 31 points across 23 issues, followed by 
+                        <strong>Mike Coleman</strong> with 30 points (16 issues) and <strong>JC Arbelbide</strong> with 19 points (11 issues).
+                    </p>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon info">&#x26A1;</div>
+                            <div class="kpi-delta neutral">
+                                <span>&#x2192;</span> Same as C81
+                            </div>
+                        </div>
+                        <div class="kpi-value">130</div>
+                        <div class="kpi-label">Points Delivered</div>
+                        <div class="kpi-progress">
+                            <div class="kpi-progress-bar info" style="width: 67%;"></div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-500); margin-top: 8px;">67% of 193 total points</div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon success">&#x2713;</div>
+                            <div class="kpi-delta up">
+                                <span>&#x2191;</span> +7 vs C81
+                            </div>
+                        </div>
+                        <div class="kpi-value">89</div>
+                        <div class="kpi-label">Issues Completed</div>
+                        <div class="kpi-progress">
+                            <div class="kpi-progress-bar success" style="width: 68%;"></div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-500); margin-top: 8px;">68% of 130 total issues</div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon warning">&#x23F1;</div>
+                            <div class="kpi-delta down">
+                                <span>&#x2193;</span> -3% vs C81
+                            </div>
+                        </div>
+                        <div class="kpi-value">67%</div>
+                        <div class="kpi-label">Completion Rate (Points)</div>
+                        <div class="kpi-progress">
+                            <div class="kpi-progress-bar warning" style="width: 67%;"></div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-500); margin-top: 8px;">C81 was 71% (130/184)</div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon danger">&#x1F4E6;</div>
+                            <div class="kpi-delta down">
+                                <span>&#x2191;</span> +9 pts vs C81
+                            </div>
+                        </div>
+                        <div class="kpi-value">63</div>
+                        <div class="kpi-label">Carryover Points</div>
+                        <div class="kpi-progress">
+                            <div class="kpi-progress-bar danger" style="width: 33%;"></div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-500); margin-top: 8px;">193 - 130 = 63 pts remaining</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cycle Comparison -->
+            <section id="comparison">
+                <h2 class="section-title">Cycle Comparison</h2>
+                <p class="section-subtitle">Cycle 82 vs Cycle 81 Performance</p>
+                <div class="chart-grid" style="margin-top: 24px;">
+                    <div class="chart-card">
+                        <h3 class="chart-title">Points & Issues Comparison</h3>
+                        <div class="chart-container">
+                            <canvas id="comparisonChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">Completion Rate Trend (Points-Based)</h3>
+                        <div class="chart-container">
+                            <canvas id="completionTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section id="charts">
+                <h2 class="section-title">Visual Analytics</h2>
+                <p class="section-subtitle">Issue distribution and progress visualization</p>
+                
+                <div class="chart-grid" style="margin-top: 24px;">
+                    <div class="chart-card full-width">
+                        <h3 class="chart-title">Daily Progress (Cumulative)</h3>
+                        <div class="chart-container">
+                            <canvas id="dailyProgressChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="chart-title">Points Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="chart-title">Points by Contributor</h3>
+                        <div class="chart-container">
+                            <canvas id="contributorChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Velocity Trends -->
+            <section id="velocity">
+                <h2 class="section-title">Velocity Trends</h2>
+                <p class="section-subtitle">Historical performance across recent cycles</p>
+                
+                <div class="chart-card" style="margin-top: 24px;">
+                    <h3 class="chart-title">6-Cycle Velocity Trend</h3>
+                    <div class="chart-container" style="height: 350px;">
+                        <canvas id="velocityTrendChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Accomplishments Section -->
+            <section id="accomplishments">
+                <h2 class="section-title">Key Accomplishments</h2>
+                <p class="section-subtitle">Categorized completed work for Cycle 82</p>
+                
+                <div class="accomplishments-grid" style="margin-top: 24px;">
+                    <div class="accomplishment-card">
+                        <div class="accomplishment-header">
+                            <span class="accomplishment-emoji">&#x2728;</span>
+                            <div>
+                                <div class="accomplishment-title">Feature Enhancements</div>
+                                <div class="accomplishment-count">18 items</div>
+                            </div>
+                        </div>
+                        <ul class="accomplishment-list">
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6796" class="ticket-id">TF-6796</a> &mdash; Create New OpenDoor Workflow</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6798" class="ticket-id">TF-6798</a> &mdash; Create New OpenDoor Permission</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6800" class="ticket-id">TF-6800</a> &mdash; Update create/modify session modal for new workflow</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6698" class="ticket-id">TF-6698</a> &mdash; Add school district boundaries layer on map</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6716" class="ticket-id">TF-6716</a> &mdash; Compare raw vs adjusted sale price trends</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6846" class="ticket-id">TF-6846</a> &mdash; Add new fields for intended use/users FE</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6776" class="ticket-id">TF-6776</a> &mdash; Track sqft/acres preference for lotsize</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6774" class="ticket-id">TF-6774</a> &mdash; Track furthest tab user navigated to</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6844" class="ticket-id">TF-6844</a> &mdash; Add session title to sessions</li>
+                            <li class="accomplishment-item" style="color: var(--gray-500);">... and 9 more items</li>
+                        </ul>
+                    </div>
+
+                    <div class="accomplishment-card">
+                        <div class="accomplishment-header">
+                            <span class="accomplishment-emoji">&#x1F527;</span>
+                            <div>
+                                <div class="accomplishment-title">Data & Analytics</div>
+                                <div class="accomplishment-count">16 items</div>
+                            </div>
+                        </div>
+                        <ul class="accomplishment-list">
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6790" class="ticket-id">TF-6790</a> &mdash; Detect heatmap % adjustment of comp in comp rec</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6791" class="ticket-id">TF-6791</a> &mdash; Create popup flow, auto-scroll to next comp</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6792" class="ticket-id">TF-6792</a> &mdash; Insert Heatmap % field automatically</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6881" class="ticket-id">TF-6881</a> &mdash; Display heatmap % next to address, color-code</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6773" class="ticket-id">TF-6773</a> &mdash; Auto apply location adjustments on KBB sessions</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6794" class="ticket-id">TF-6794</a> &mdash; Allow manual override of location/view adjustments</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6795" class="ticket-id">TF-6795</a> &mdash; Apply adjustments between multiple ranges</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6750" class="ticket-id">TF-6750</a> &mdash; Store best guess FMV in backend during export</li>
+                            <li class="accomplishment-item" style="color: var(--gray-500);">... and 8 more items</li>
+                        </ul>
+                    </div>
+
+                    <div class="accomplishment-card">
+                        <div class="accomplishment-header">
+                            <span class="accomplishment-emoji">&#x1F41B;</span>
+                            <div>
+                                <div class="accomplishment-title">Bug Fixes & Stability</div>
+                                <div class="accomplishment-count">10 items</div>
+                            </div>
+                        </div>
+                        <ul class="accomplishment-list">
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6843" class="ticket-id">TF-6843</a> &mdash; Fix KBB Comp-Rec quality auto-set bug</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6870" class="ticket-id">TF-6870</a> &mdash; Fix sold_price_raw chart on market analysis</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6830" class="ticket-id">TF-6830</a> &mdash; Fix automated condition rating C2+ bug</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6836" class="ticket-id">TF-6836</a> &mdash; Fix inconsistent ordering of comps on KBB report</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6821" class="ticket-id">TF-6821</a> &mdash; Fix pool adjustments bug</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6822" class="ticket-id">TF-6822</a> &mdash; Fix location/view adjustment on KBB sessions</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6820" class="ticket-id">TF-6820</a> &mdash; Fix grid cleanup value changes</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6823" class="ticket-id">TF-6823</a> &mdash; Fix flashing values when updating</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6831" class="ticket-id">TF-6831</a> &mdash; Fix unexpected grid view change on map leave</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6841" class="ticket-id">TF-6841</a> &mdash; Fix missing photos on comp in session</li>
+                        </ul>
+                    </div>
+
+                    <div class="accomplishment-card">
+                        <div class="accomplishment-header">
+                            <span class="accomplishment-emoji">&#x26A1;</span>
+                            <div>
+                                <div class="accomplishment-title">Infrastructure & Backend</div>
+                                <div class="accomplishment-count">14 items</div>
+                            </div>
+                        </div>
+                        <ul class="accomplishment-list">
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6867" class="ticket-id">TF-6867</a> &mdash; Convert simple endpoints to async</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6864" class="ticket-id">TF-6864</a> &mdash; Make delete comp adjustment endpoint async</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6788" class="ticket-id">TF-6788</a> &mdash; Rename session_adjustment_overrides table</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6786" class="ticket-id">TF-6786</a> &mdash; Store default selected adjustment + override flag</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6704" class="ticket-id">TF-6704</a> &mdash; Deploy post-engine job</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6706" class="ticket-id">TF-6706</a> &mdash; Load engine output data to BigQuery</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6710" class="ticket-id">TF-6710</a> &mdash; Deploy post-engine job to production</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6818" class="ticket-id">TF-6818</a> &mdash; Deploy bubble-integration container to cloud run</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6872" class="ticket-id">TF-6872</a> &mdash; Run liquibase migrations on GitLab</li>
+                            <li class="accomplishment-item" style="color: var(--gray-500);">... and 5 more items</li>
+                        </ul>
+                    </div>
+
+                    <div class="accomplishment-card">
+                        <div class="accomplishment-header">
+                            <span class="accomplishment-emoji">&#x1F52C;</span>
+                            <div>
+                                <div class="accomplishment-title">Spikes & Research</div>
+                                <div class="accomplishment-count">3 items</div>
+                            </div>
+                        </div>
+                        <ul class="accomplishment-list">
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6208" class="ticket-id">TF-6208</a> &mdash; SPIKE: Investigate Inspectify App integration</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6789" class="ticket-id">TF-6789</a> &mdash; SPIKE: OpenDoor probability contract for under contract</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6636" class="ticket-id">TF-6636</a> &mdash; SPIKE: Investigate switching to UV from PIP</li>
+                        </ul>
+                    </div>
+
+                    <div class="accomplishment-card">
+                        <div class="accomplishment-header">
+                            <span class="accomplishment-emoji">&#x1F3A8;</span>
+                            <div>
+                                <div class="accomplishment-title">UI/UX Improvements</div>
+                                <div class="accomplishment-count">6 items</div>
+                            </div>
+                        </div>
+                        <ul class="accomplishment-list">
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6832" class="ticket-id">TF-6832</a> &mdash; UI changes for photo mode on reconciliation</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6879" class="ticket-id">TF-6879</a> &mdash; Ensure modal is in front of photos</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6880" class="ticket-id">TF-6880</a> &mdash; Scroll to next comp when skipping with photos open</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6761" class="ticket-id">TF-6761</a> &mdash; Add subtitles to paginated sections</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6760" class="ticket-id">TF-6760</a> &mdash; PDF content changes</li>
+                            <li class="accomplishment-item"><a href="https://linear.app/truefootage-eng/issue/TF-6757" class="ticket-id">TF-6757</a> &mdash; Address Paul's feedback on export PDF</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Team Performance Section -->
+            <section id="team">
+                <h2 class="section-title">Team Performance</h2>
+                <p class="section-subtitle">Individual contributor metrics for Cycle 82 (unestimated issues count as 1 point)</p>
+                
+                <div class="table-card" style="margin-top: 24px;">
+                    <div class="table-header">
+                        <h3 class="chart-title" style="margin: 0;">Contributor Breakdown</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Contributor</th>
+                                <th>Issues</th>
+                                <th>Completed</th>
+                                <th>Points</th>
+                                <th>Pts/Day</th>
+                                <th>Completion Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="contributor-name">Daniel Sorichetti</span></td>
+                                <td>24</td>
+                                <td>23</td>
+                                <td><strong>31</strong></td>
+                                <td>6.2</td>
+                                <td>97% <div class="progress-mini"><div class="progress-mini-bar" style="width: 97%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Mike Coleman</span></td>
+                                <td>16</td>
+                                <td>16</td>
+                                <td><strong>30</strong></td>
+                                <td>6.0</td>
+                                <td>100% <div class="progress-mini"><div class="progress-mini-bar" style="width: 100%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">JC Arbelbide</span></td>
+                                <td>11</td>
+                                <td>11</td>
+                                <td><strong>19</strong></td>
+                                <td>3.8</td>
+                                <td>100% <div class="progress-mini"><div class="progress-mini-bar" style="width: 100%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Samson Liu</span></td>
+                                <td>11</td>
+                                <td>10</td>
+                                <td><strong>16</strong></td>
+                                <td>3.2</td>
+                                <td>94% <div class="progress-mini"><div class="progress-mini-bar" style="width: 94%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Mariusz Wojakowski</span></td>
+                                <td>9</td>
+                                <td>9</td>
+                                <td><strong>9</strong></td>
+                                <td>1.8</td>
+                                <td>100% <div class="progress-mini"><div class="progress-mini-bar" style="width: 100%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Cody Stoltman</span></td>
+                                <td>6</td>
+                                <td>6</td>
+                                <td><strong>9</strong></td>
+                                <td>1.8</td>
+                                <td>100% <div class="progress-mini"><div class="progress-mini-bar" style="width: 100%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Maksym Butsykin</span></td>
+                                <td>4</td>
+                                <td>3</td>
+                                <td><strong>8</strong></td>
+                                <td>1.6</td>
+                                <td>89% <div class="progress-mini"><div class="progress-mini-bar" style="width: 89%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Gino Trombetti</span></td>
+                                <td>3</td>
+                                <td>3</td>
+                                <td><strong>5</strong></td>
+                                <td>1.0</td>
+                                <td>100% <div class="progress-mini"><div class="progress-mini-bar" style="width: 100%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Real</span></td>
+                                <td>5</td>
+                                <td>4</td>
+                                <td><strong>4</strong></td>
+                                <td>0.8</td>
+                                <td>67% <div class="progress-mini"><div class="progress-mini-bar" style="width: 67%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Colin Maretsky</span></td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td><strong>3</strong></td>
+                                <td>0.6</td>
+                                <td>100% <div class="progress-mini"><div class="progress-mini-bar" style="width: 100%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Aleksander Jaworski</span></td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td><strong>2</strong></td>
+                                <td>0.4</td>
+                                <td>100% <div class="progress-mini"><div class="progress-mini-bar" style="width: 100%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="contributor-name">Michal Raczyk</span></td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td><strong>1</strong></td>
+                                <td>0.2</td>
+                                <td>100% <div class="progress-mini"><div class="progress-mini-bar" style="width: 100%;"></div></div></td>
+                            </tr>
+                            <tr style="background: var(--gray-50); font-weight: 600;">
+                                <td>Team Total (from cycle)</td>
+                                <td>130</td>
+                                <td>89</td>
+                                <td><strong>130</strong> / 193</td>
+                                <td>26.0</td>
+                                <td>67%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Insights Section -->
+            <section id="insights">
+                <h2 class="section-title">Insights & Analysis</h2>
+                <p class="section-subtitle">Key patterns and observations from Cycle 82</p>
+                
+                <div class="insights-grid" style="margin-top: 24px;">
+                    <div class="insight-card">
+                        <div class="insight-title">Consistent Velocity</div>
+                        <div class="insight-value" style="color: var(--primary-600);">130 pts</div>
+                        <div class="insight-description">Same point delivery as Cycle 81, showing stable team velocity.</div>
+                    </div>
+                    
+                    <div class="insight-card warning">
+                        <div class="insight-title">Carryover</div>
+                        <div class="insight-value" style="color: var(--warning-600);">63 pts</div>
+                        <div class="insight-description">33% of committed scope carrying over. Consider reducing initial commitment next cycle.</div>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-title">Label Distribution</div>
+                        <div class="insight-value" style="color: var(--primary-600);">4 bugs fixed</div>
+                        <div class="insight-description">3 spikes completed, 3 backend improvements, 1 cleanup task, and 1 test added.</div>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-title">Scope Change</div>
+                        <div class="insight-value" style="color: var(--primary-600);">+5%</div>
+                        <div class="insight-description">Scope grew from 194 to 207 mid-cycle before settling at 193 points.</div>
+                    </div>
+
+                    <div class="insight-card success">
+                        <div class="insight-title">Top Performer</div>
+                        <div class="insight-value" style="color: var(--success-600);">Daniel Sorichetti</div>
+                        <div class="insight-description">Led point delivery with 31 points across 23 issues (6.2 pts/day average).</div>
+                    </div>
+
+                    <div class="insight-card success">
+                        <div class="insight-title">Contributors</div>
+                        <div class="insight-value" style="color: var(--success-600);">12 active</div>
+                        <div class="insight-description">Full team engagement with 12 contributors delivering work this cycle.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Planning Section -->
+            <section id="planning">
+                <h2 class="section-title">Capacity Planning</h2>
+                <p class="section-subtitle">Recommendations for Cycle 83</p>
+
+                <div class="recommendations-card" style="margin-top: 24px;">
+                    <h3 class="chart-title">Recommendations</h3>
+                    <ol class="recommendations-list">
+                        <li class="recommendation-item">
+                            <strong>Reduce initial scope:</strong> With 63 points of carryover (33%), consider committing to ~160 points next cycle instead of 193+ to improve completion rate.
+                        </li>
+                        <li class="recommendation-item">
+                            <strong>Address carryover first:</strong> Prioritize completing the 63 points of work carrying over before adding new scope to Cycle 83.
+                        </li>
+                        <li class="recommendation-item">
+                            <strong>Continue OpenDoor work:</strong> The OpenDoor Workflow feature is progressing well. Plan for additional refinements and edge case handling.
+                        </li>
+                        <li class="recommendation-item">
+                            <strong>Follow up on spikes:</strong> The Inspectify App spike (TF-6208) and UV migration spike (TF-6636) should inform future planning. Create follow-up implementation tickets.
+                        </li>
+                        <li class="recommendation-item">
+                            <strong>Consider GitLab integration:</strong> Enable GitLab MCP to include code metrics (commits, MRs, lines changed) in future reports for more comprehensive analysis.
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="insights-grid" style="margin-top: 24px;">
+                    <div class="insight-card">
+                        <div class="insight-title">Expected Capacity (Cycle 83)</div>
+                        <div class="insight-value" style="color: var(--primary-600);">~130 pts</div>
+                        <div class="insight-description">Based on recent performance. Plus 63 pts carryover = 193 pts total.</div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-title">Per-Person Average</div>
+                        <div class="insight-value" style="color: var(--primary-600);">~10.8 pts</div>
+                        <div class="insight-description">Average points per active contributor this cycle.</div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-title">Target Completion Rate</div>
+                        <div class="insight-value" style="color: var(--warning-600);">75%+</div>
+                        <div class="insight-description">Aim to improve from 67% by reducing initial scope commitment.</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    Generated on Jan 15, 2026 &bull; Truefootage Engineering
+                </div>
+                <div class="footer-links">
+                    <a href="https://linear.app/truefootage-eng/team/TF/cycles" target="_blank">View in Linear</a>
+                    <a href="https://linear.app/truefootage-eng/cycle/82" target="_blank">Cycle 82 Details</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Chart.js configuration
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748B';
+
+        // Daily Progress Chart - Using cycle history data
+        const dailyProgressCtx = document.getElementById('dailyProgressChart').getContext('2d');
+        new Chart(dailyProgressCtx, {
+            type: 'line',
+            data: {
+                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                datasets: [
+                    {
+                        label: 'Completed Points',
+                        data: [25, 41, 41, 44, 75, 99, 130],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    },
+                    {
+                        label: 'Total Scope (Points)',
+                        data: [194, 184, 182, 183, 207, 201, 193],
+                        borderColor: '#6366F1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    },
+                    {
+                        label: 'Completed Issues',
+                        data: [17, 26, 26, 29, 50, 68, 89],
+                        borderColor: '#F59E0B',
+                        borderDash: [5, 5],
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Points Distribution Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed (130 pts)', 'Carryover (63 pts)'],
+                datasets: [{
+                    data: [130, 63],
+                    backgroundColor: ['#10B981', '#F59E0B'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+
+        // Contributor Chart
+        const contributorCtx = document.getElementById('contributorChart').getContext('2d');
+        new Chart(contributorCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Daniel S.', 'Mike C.', 'JC A.', 'Samson L.', 'Mariusz W.', 'Cody S.', 'Maksym B.', 'Gino T.'],
+                datasets: [{
+                    label: 'Points Delivered',
+                    data: [31, 30, 19, 16, 9, 9, 8, 5],
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Comparison Chart
+        const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(comparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Points Completed', 'Total Points', 'Issues Completed'],
+                datasets: [
+                    {
+                        label: 'Cycle 81',
+                        data: [130, 184, 82],
+                        backgroundColor: '#94A3B8',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Cycle 82',
+                        data: [130, 193, 89],
+                        backgroundColor: '#4F46E5',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Completion Trend Chart (Points-based)
+        const completionTrendCtx = document.getElementById('completionTrendChart').getContext('2d');
+        new Chart(completionTrendCtx, {
+            type: 'line',
+            data: {
+                labels: ['C77', 'C78', 'C79', 'C80', 'C81', 'C82'],
+                datasets: [{
+                    label: 'Completion Rate % (Points)',
+                    data: [66, 37, 40, 30, 71, 67],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    pointBackgroundColor: '#10B981'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Velocity Trend Chart
+        const velocityTrendCtx = document.getElementById('velocityTrendChart').getContext('2d');
+        new Chart(velocityTrendCtx, {
+            type: 'line',
+            data: {
+                labels: ['C77', 'C78', 'C79', 'C80', 'C81', 'C82'],
+                datasets: [
+                    {
+                        label: 'Points Completed',
+                        data: [164, 52, 78, 55, 130, 130],
+                        borderColor: '#4F46E5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    },
+                    {
+                        label: 'Total Scope',
+                        data: [248, 141, 197, 185, 184, 193],
+                        borderColor: '#94A3B8',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5],
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrueFootage Cycle 83 Report | Jan 15-22, 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        header .subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+        }
+        header .date-range {
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 999px;
+            display: inline-block;
+            font-size: 0.875rem;
+            color: #60a5fa;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        .card h2 {
+            font-size: 1.25rem;
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card h2 .emoji { font-size: 1.5rem; }
+        
+        /* Grid layouts */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        @media (max-width: 1024px) {
+            .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+        }
+        
+        /* Metrics */
+        .metric-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .metric-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-top: 0.25rem;
+        }
+        .metric-delta {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+        .delta-up { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .delta-down { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .delta-neutral { background: rgba(148, 163, 184, 0.1); color: #94a3b8; }
+        
+        /* Comparison table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .comparison-table th {
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        .comparison-table tr:last-child td { border-bottom: none; }
+        
+        /* Progress bars */
+        .progress-bar {
+            height: 8px;
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .progress-blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .progress-green { background: linear-gradient(90deg, #10b981, #34d399); }
+        .progress-purple { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+        .progress-amber { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        
+        /* Insights */
+        .insight-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-left: 4px solid;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .insight-green { border-color: #10b981; }
+        .insight-amber { border-color: #f59e0b; }
+        .insight-blue { border-color: #3b82f6; }
+        .insight-red { border-color: #ef4444; }
+        .insight-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .insight-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .insight-description {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        
+        /* Contributor cards */
+        .contributor-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .contributor-rank {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: #60a5fa;
+        }
+        .contributor-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .contributor-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .contributor-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .contributor-stat-value {
+            font-weight: 600;
+            color: #60a5fa;
+        }
+        .contributor-fun-fact {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            font-size: 0.8rem;
+            color: #a78bfa;
+            font-style: italic;
+        }
+        
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+        
+        /* Accomplishments */
+        .accomplishment {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: rgba(30, 41, 59, 0.4);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .accomplishment-emoji { font-size: 1.25rem; }
+        .accomplishment-title { font-weight: 500; }
+        .accomplishment-meta {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 0.25rem;
+        }
+        
+        /* DORA badges */
+        .dora-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .dora-elite { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .dora-high { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .dora-medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .dora-low { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        
+        /* Fun facts banner */
+        .fun-fact-banner {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .fun-fact-banner .icon { font-size: 2rem; }
+        .fun-fact-banner .content {
+            font-size: 0.95rem;
+            color: #c4b5fd;
+        }
+        
+        /* Section divider */
+        .section-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.3), transparent);
+            margin: 2rem 0;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏠 Cycle 83 Report</h1>
+            <p class="subtitle">TrueFootage Engineering Team</p>
+            <span class="date-range">📅 January 15 - 22, 2026 (Week 3)</span>
+        </header>
+        
+        <!-- Executive Summary -->
+        <div class="card">
+            <h2><span class="emoji">📊</span> Executive Summary</h2>
+            <div class="grid-4">
+                <div class="metric-card">
+                    <div class="metric-value">99</div>
+                    <div class="metric-label">Points Delivered</div>
+                    <div class="metric-delta delta-down">↓ 31 vs Cycle 82</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">63</div>
+                    <div class="metric-label">Issues Completed</div>
+                    <div class="metric-delta delta-down">↓ 26 vs Cycle 82</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">55%</div>
+                    <div class="metric-label">Completion Rate</div>
+                    <div class="metric-delta delta-down">↓ 12.4% vs Cycle 82</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">19.8</div>
+                    <div class="metric-label">Daily Velocity (pts/day)</div>
+                    <div class="metric-delta delta-down">↓ 6.2 vs Cycle 82</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fun Fact Banner 1 -->
+        <div class="fun-fact-banner">
+            <span class="icon">🎯</span>
+            <div class="content">
+                <strong>Did you know?</strong> This cycle, the team shipped 45 merge requests with an average lead time of just 18 hours — that's faster than getting a pizza delivered in NYC! 🍕
+            </div>
+        </div>
+        
+        <!-- Key Insights -->
+        <div class="card">
+            <h2><span class="emoji">💡</span> Key Insights</h2>
+            <div class="grid-3">
+                <div class="insight-card insight-amber">
+                    <div class="insight-title">Velocity Change</div>
+                    <div class="insight-value">-31 pts</div>
+                    <div class="insight-description">Delivered 99 pts, down from 130 in Cycle 82. Heavy scope with 180 total points committed — the highest in recent cycles!</div>
+                </div>
+                <div class="insight-card insight-amber">
+                    <div class="insight-title">Carryover</div>
+                    <div class="insight-value">81 pts</div>
+                    <div class="insight-description">45% of committed scope carrying to next cycle. Consider right-sizing initial commitment based on team capacity.</div>
+                </div>
+                <div class="insight-card insight-blue">
+                    <div class="insight-title">Scope Growth</div>
+                    <div class="insight-value">+0.5%</div>
+                    <div class="insight-description">Scope grew slightly from 179 to 180 pts mid-cycle. Much more stable than Cycle 82's wild swings!</div>
+                </div>
+                <div class="insight-card insight-green">
+                    <div class="insight-title">Work Distribution</div>
+                    <div class="insight-value">Balanced</div>
+                    <div class="insight-description">Good mix: Features (28), Bug Fixes (8), UI/UX (12), Infrastructure (7), Testing (5), Research (4).</div>
+                </div>
+                <div class="insight-card insight-green">
+                    <div class="insight-title">Top Performer</div>
+                    <div class="insight-value">Daniel S.</div>
+                    <div class="insight-description">Led delivery with 19 points across 12 issues (3.8 pts/day). Dominated the concessions feature work!</div>
+                </div>
+                <div class="insight-card insight-blue">
+                    <div class="insight-title">Team Engagement</div>
+                    <div class="insight-value">10 Active</div>
+                    <div class="insight-description">Full squad participation with all 10 engineers contributing completed work this cycle.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cycle Comparison -->
+        <div class="grid-2">
+            <div class="card">
+                <h2><span class="emoji">📈</span> Cycle 83 vs 82 Comparison</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Cycle 83</th>
+                        <th>Cycle 82</th>
+                        <th>Delta</th>
+                    </tr>
+                    <tr>
+                        <td>Total Scope</td>
+                        <td>180 pts</td>
+                        <td>193 pts</td>
+                        <td class="delta-neutral">-13 pts</td>
+                    </tr>
+                    <tr>
+                        <td>Completed</td>
+                        <td>99 pts</td>
+                        <td>130 pts</td>
+                        <td class="delta-down">-31 pts</td>
+                    </tr>
+                    <tr>
+                        <td>Completion %</td>
+                        <td>55.0%</td>
+                        <td>67.4%</td>
+                        <td class="delta-down">-12.4%</td>
+                    </tr>
+                    <tr>
+                        <td>Daily Velocity</td>
+                        <td>19.8 pts/day</td>
+                        <td>26.0 pts/day</td>
+                        <td class="delta-down">-6.2 pts/day</td>
+                    </tr>
+                    <tr>
+                        <td>Issues Completed</td>
+                        <td>63</td>
+                        <td>89</td>
+                        <td class="delta-down">-26</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h2><span class="emoji">🎯</span> Burndown Comparison</h2>
+                <div class="chart-container">
+                    <canvas id="burndownChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fun Fact Banner 2 -->
+        <div class="fun-fact-banner">
+            <span class="icon">🌍</span>
+            <div class="content">
+                <strong>Bug of the Week:</strong> Someone found comps located "off the coast of Africa" due to lat/long values of 0. Geography lesson: (0,0) is actually in the Atlantic Ocean, not your backyard! 🗺️
+            </div>
+        </div>
+        
+        <!-- GitLab & DORA Metrics -->
+        <div class="card">
+            <h2><span class="emoji">🔧</span> GitLab & DORA Metrics</h2>
+            <div class="grid-4">
+                <div class="metric-card">
+                    <div class="metric-value">45</div>
+                    <div class="metric-label">MRs Merged</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">61</div>
+                    <div class="metric-label">Commits</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">+8,716</div>
+                    <div class="metric-label">Lines Added</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">-2,272</div>
+                    <div class="metric-label">Lines Removed</div>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem;">
+                <h3 style="margin-bottom: 1rem; color: #f1f5f9;">DORA Performance Indicators</h3>
+                <div class="grid-3">
+                    <div class="metric-card">
+                        <div class="metric-value" style="font-size: 1.75rem;">9/week</div>
+                        <div class="metric-label">Deployment Frequency</div>
+                        <span class="dora-badge dora-elite">⭐ ELITE</span>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="font-size: 1.75rem;">18h</div>
+                        <div class="metric-label">Lead Time for Changes</div>
+                        <span class="dora-badge dora-elite">⭐ ELITE</span>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="font-size: 1.75rem;">4%</div>
+                        <div class="metric-label">Change Failure Rate</div>
+                        <span class="dora-badge dora-elite">⭐ ELITE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="section-divider">
+        
+        <!-- Team Performance -->
+        <div class="card">
+            <h2><span class="emoji">👥</span> Team Performance & Trivia</h2>
+            <div class="grid-2">
+                <!-- Daniel Sorichetti -->
+                <div class="contributor-card">
+                    <div class="contributor-rank">🥇</div>
+                    <div class="contributor-name">Daniel Sorichetti</div>
+                    <div class="contributor-stats">
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">19</span> points
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">12</span> issues
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">~11</span> commits
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">3.8</span> pts/day
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-purple" style="width: 100%"></div>
+                    </div>
+                    <div class="contributor-fun-fact">
+                        🎨 "Concessions King" — Daniel single-handedly built the entire concessions adjustment system, from backend to charts. That's 8 sub-tasks, all QA'd. Legend says he dreams in hex color codes.
+                    </div>
+                </div>
+                
+                <!-- Mike Coleman -->
+                <div class="contributor-card">
+                    <div class="contributor-rank">🥈</div>
+                    <div class="contributor-name">Mike Coleman</div>
+                    <div class="contributor-stats">
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">17</span> points
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">10</span> issues
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">~10</span> commits
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">3.4</span> pts/day
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-blue" style="width: 89%"></div>
+                    </div>
+                    <div class="contributor-fun-fact">
+                        📸 "Photo Modal Master" — Mike restructured the entire photo viewing experience AND built the RestB feature flag system. Also fixed that garage spaces bug that was driving everyone crazy!
+                    </div>
+                </div>
+                
+                <!-- Real -->
+                <div class="contributor-card">
+                    <div class="contributor-rank">🥉</div>
+                    <div class="contributor-name">Real</div>
+                    <div class="contributor-stats">
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">16</span> points
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">8</span> issues
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">~10</span> commits
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">3.2</span> pts/day
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-green" style="width: 84%"></div>
+                    </div>
+                    <div class="contributor-fun-fact">
+                        🚀 "Async Assassin" — Real implemented async across the ENTIRE ML service while simultaneously fixing polygon generation bugs. Tested Hypothesis testing frameworks, because apparently regular testing wasn't meta enough.
+                    </div>
+                </div>
+                
+                <!-- Samson Liu -->
+                <div class="contributor-card">
+                    <div class="contributor-rank">4</div>
+                    <div class="contributor-name">Samson Liu</div>
+                    <div class="contributor-stats">
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">12</span> points
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">8</span> issues
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">~7</span> commits
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">2.4</span> pts/day
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-amber" style="width: 63%"></div>
+                    </div>
+                    <div class="contributor-fun-fact">
+                        🧭 "Navigation Ninja" — Built the entire quick-link navigation system for the export page. Also noticed the reconciliation modal navigate button was "always going to export." Now it actually goes where it should!
+                    </div>
+                </div>
+                
+                <!-- JC Arbelbide -->
+                <div class="contributor-card">
+                    <div class="contributor-rank">5</div>
+                    <div class="contributor-name">JC Arbelbide</div>
+                    <div class="contributor-stats">
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">11</span> points
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">10</span> issues
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">~7</span> commits
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">2.2</span> pts/day
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-blue" style="width: 58%"></div>
+                    </div>
+                    <div class="contributor-fun-fact">
+                        🔍 "Infrastructure Inspector" — JC handled RestB photo labels, backend observability dashboards, AND started the CLAUDE.md documentation. Basically the team's Swiss Army knife but for code.
+                    </div>
+                </div>
+                
+                <!-- Colin Maretsky -->
+                <div class="contributor-card">
+                    <div class="contributor-rank">6</div>
+                    <div class="contributor-name">Colin Maretsky</div>
+                    <div class="contributor-stats">
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">9</span> points
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">5</span> issues
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">~5</span> commits
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">1.8</span> pts/day
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-purple" style="width: 47%"></div>
+                    </div>
+                    <div class="contributor-fun-fact">
+                        🗺️ "Map Magician" — Colin made zooming to comps actually work AND fixed the elusive Ctrl+M hotkey issue. Users can now toggle maps without doing a rain dance first!
+                    </div>
+                </div>
+                
+                <!-- Mariusz Wojakowski -->
+                <div class="contributor-card">
+                    <div class="contributor-rank">7</div>
+                    <div class="contributor-name">Mariusz Wojakowski</div>
+                    <div class="contributor-stats">
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">5</span> points
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">6</span> issues
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">~3</span> commits
+                        </div>
+                        <div class="contributor-stat">
+                            <span class="contributor-stat-value">1.0</span> pts/day
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-green" style="width: 26%"></div>
+                    </div>
+                    <div class="contributor-fun-fact">
+                        🏗️ "Data Architect" — Mariusz is building the foundation for REdistribute engine data. He's literally decided to keep output data "forever." Someone really believes in version control!
+                    </div>
+                </div>
+                
+                <!-- Gino, Michal, Will -->
+                <div class="contributor-card">
+                    <div class="contributor-rank">8+</div>
+                    <div class="contributor-name">Supporting Cast</div>
+                    <div class="contributor-stats">
+                        <div class="contributor-stat">
+                            <strong>Gino Trombetti:</strong> 5 pts, REDistribute Engine
+                        </div>
+                        <div class="contributor-stat">
+                            <strong>Michal Raczyk:</strong> RestB backfill wizard
+                        </div>
+                    </div>
+                    <div class="contributor-fun-fact">
+                        🎬 Fun fact: Will Fried created 23 tickets this cycle — more than any other human. He's basically the team's feature-request-bot, but with better video explanations!
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fun Fact Banner 3 -->
+        <div class="fun-fact-banner">
+            <span class="icon">⌨️</span>
+            <div class="content">
+                <strong>Hotkey Horror Story:</strong> Ctrl+M to toggle map mode "wasn't working the first time." Turns out it was working, just not when you wanted it to. Classic keyboard gaslighting! Now fixed.
+            </div>
+        </div>
+        
+        <!-- Category Breakdown -->
+        <div class="grid-2">
+            <div class="card">
+                <h2><span class="emoji">🏷️</span> Work by Category</h2>
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><span class="emoji">🏆</span> Top Accomplishments</h2>
+                <div style="max-height: 340px; overflow-y: auto;">
+                    <div class="accomplishment">
+                        <span class="accomplishment-emoji">✨</span>
+                        <div>
+                            <div class="accomplishment-title">Concession Adjustments Complete</div>
+                            <div class="accomplishment-meta">TF-6892 • Daniel Sorichetti • Full feature with charts, manual input, special logic</div>
+                        </div>
+                    </div>
+                    <div class="accomplishment">
+                        <span class="accomplishment-emoji">⚡</span>
+                        <div>
+                            <div class="accomplishment-title">ML Service Async Implementation</div>
+                            <div class="accomplishment-meta">TF-6594 • Real • 5 pts • Major performance improvement</div>
+                        </div>
+                    </div>
+                    <div class="accomplishment">
+                        <span class="accomplishment-emoji">🔧</span>
+                        <div>
+                            <div class="accomplishment-title">REDistribute Engine Finalized</div>
+                            <div class="accomplishment-meta">TF-6396 • Gino Trombetti • 5 pts • Matching existing engine</div>
+                        </div>
+                    </div>
+                    <div class="accomplishment">
+                        <span class="accomplishment-emoji">📸</span>
+                        <div>
+                            <div class="accomplishment-title">RestB Photo Labels Integration</div>
+                            <div class="accomplishment-meta">TF-6911 • JC Arbelbide • Representative photos from RestB</div>
+                        </div>
+                    </div>
+                    <div class="accomplishment">
+                        <span class="accomplishment-emoji">🧭</span>
+                        <div>
+                            <div class="accomplishment-title">Export Page Navigation</div>
+                            <div class="accomplishment-meta">TF-6758 • Samson Liu • Quick link component architecture</div>
+                        </div>
+                    </div>
+                    <div class="accomplishment">
+                        <span class="accomplishment-emoji">🗺️</span>
+                        <div>
+                            <div class="accomplishment-title">Map Zoom & Hotkey Fixes</div>
+                            <div class="accomplishment-meta">TF-6835 & TF-6922 • Colin Maretsky • User experience improvements</div>
+                        </div>
+                    </div>
+                    <div class="accomplishment">
+                        <span class="accomplishment-emoji">🐛</span>
+                        <div>
+                            <div class="accomplishment-title">Africa Comps Bug Fixed</div>
+                            <div class="accomplishment-meta">TF-6877 • JC Arbelbide • Lat/long 0 values treated as null</div>
+                        </div>
+                    </div>
+                    <div class="accomplishment">
+                        <span class="accomplishment-emoji">🧪</span>
+                        <div>
+                            <div class="accomplishment-title">Hypothesis Testing Framework</div>
+                            <div class="accomplishment-meta">TF-5288 • Real • Property-based testing exploration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="section-divider">
+        
+        <!-- Recommendations -->
+        <div class="card">
+            <h2><span class="emoji">📋</span> Recommendations for Cycle 84</h2>
+            <div class="grid-3">
+                <div class="insight-card insight-amber">
+                    <div class="insight-title">📏 Right-Size Scope</div>
+                    <div class="insight-description">
+                        With 81 points carrying over, consider committing to <strong>100-120 points</strong> next cycle (vs 180 this cycle). The team sustainably delivers ~20 pts/day.
+                    </div>
+                </div>
+                <div class="insight-card insight-blue">
+                    <div class="insight-title">🎯 Focus Areas</div>
+                    <div class="insight-description">
+                        Heavy carryover in ML Service and REdistribute Engine work. Prioritize closing out these initiatives before adding new features.
+                    </div>
+                </div>
+                <div class="insight-card insight-green">
+                    <div class="insight-title">✅ Maintain Quality</div>
+                    <div class="insight-description">
+                        DORA metrics are ELITE across the board. Keep the rapid deploy cadence but watch the change failure rate as velocity increases.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fun final banner -->
+        <div class="fun-fact-banner">
+            <span class="icon">🎉</span>
+            <div class="content">
+                <strong>End Note:</strong> Despite lower point delivery, Cycle 83 saw the launch of key features: Concession Adjustments, RestB Photo Integration, and Export Navigation. Sometimes quality > quantity! See you in Cycle 84! 🚀
+            </div>
+        </div>
+        
+        <footer>
+            <p>Generated on January 23, 2026 • TrueFootage Engineering • Cycle 83 (2026-Week-3)</p>
+            <p style="margin-top: 0.5rem;">Built with 💜 and Chart.js</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Burndown Chart
+        const burndownCtx = document.getElementById('burndownChart').getContext('2d');
+        new Chart(burndownCtx, {
+            type: 'line',
+            data: {
+                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                datasets: [
+                    {
+                        label: 'C83 Completed',
+                        data: [18, 26, 26, 27, 28, 52, 99],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'C82 Completed',
+                        data: [25, 41, 41, 44, 75, 99, 130],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'C83 Ideal',
+                        data: [0, 30, 60, 90, 120, 150, 180],
+                        borderColor: '#64748b',
+                        borderDash: [5, 5],
+                        fill: false,
+                        tension: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8' }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                        ticks: { color: '#94a3b8' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                        ticks: { color: '#94a3b8' },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        // Category Chart
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['UI/UX', 'Feature', 'Infrastructure', 'Bug Fix', 'Testing', 'Research', 'Refactor'],
+                datasets: [{
+                    data: [12, 16, 7, 8, 5, 4, 3],
+                    backgroundColor: [
+                        '#8b5cf6',
+                        '#3b82f6',
+                        '#f59e0b',
+                        '#ef4444',
+                        '#10b981',
+                        '#06b6d4',
+                        '#64748b'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { 
+                            color: '#94a3b8',
+                            padding: 12,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
