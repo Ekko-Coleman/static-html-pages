@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cycle 87 End-of-Cycle Report | Truefootage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      colors: {
+        brand: {
+          50: '#EEF2FF', 100: '#E0E7FF', 200: '#C7D2FE', 300: '#A5B4FC',
+          400: '#818CF8', 500: '#6366F1', 600: '#4F46E5', 700: '#4338CA',
+          800: '#3730A3', 900: '#312E81',
+        }
+      }
+    }
+  }
+}
+</script>
+<style>
+  * { font-family: 'Inter', system-ui, sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulse-badge {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+  .animate-slide-in { animation: slideIn 0.4s ease-out forwards; }
+  .stagger-1 { animation-delay: 0.1s; opacity: 0; }
+  .stagger-2 { animation-delay: 0.2s; opacity: 0; }
+  .stagger-3 { animation-delay: 0.3s; opacity: 0; }
+  .stagger-4 { animation-delay: 0.4s; opacity: 0; }
+  .pulse-badge { animation: pulse-badge 2s ease-in-out infinite; }
+
+  .nav-tab { transition: all 0.2s ease; }
+  .nav-tab.active { color: #4F46E5; border-bottom: 2px solid #4F46E5; }
+  .nav-tab:hover { color: #4F46E5; }
+
+  .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; transition: box-shadow 0.2s ease; }
+  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+  .delta-positive { color: #059669; background: #ECFDF5; }
+  .delta-negative { color: #DC2626; background: #FEF2F2; }
+  .delta-neutral { color: #6B7280; background: #F9FAFB; }
+
+  .gradient-header { background: linear-gradient(135deg, #312E81 0%, #4F46E5 50%, #7C3AED 100%); }
+
+  .fun-fact-card {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    border-left: 4px solid #F59E0B;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .insight-card {
+    background: linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%);
+    border-left: 4px solid #7C3AED;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+
+  .progress-bar-bg { background: #E5E7EB; border-radius: 999px; height: 8px; }
+  .progress-bar-fill { border-radius: 999px; height: 8px; transition: width 0.8s ease-out; }
+
+  .section-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #CBD5E1, transparent);
+    margin: 3rem 0;
+  }
+
+  @media print {
+    .no-print { display: none !important; }
+    .gradient-header { background: #4F46E5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { background: white !important; }
+    .card { box-shadow: none !important; border: 1px solid #E5E7EB !important; break-inside: avoid; }
+    canvas { max-height: 280px !important; }
+    section { break-inside: avoid; }
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: #F8FAFC; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- Header -->
+<header class="gradient-header text-white relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/3"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/4"></div>
+  </div>
+  <div class="relative max-w-7xl mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div>
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-sm font-medium text-indigo-200 tracking-wider uppercase">Truefootage Team</span>
+          <span class="pulse-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-amber-900 shadow-lg">
+            <span class="w-2 h-2 rounded-full bg-amber-700 animate-pulse"></span>
+            IN PROGRESS &mdash; Day 6 of 7
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Cycle 87 Report</h1>
+        <p class="text-indigo-200 text-lg">Feb 12 &ndash; Feb 19, 2026 &bull; Data through Feb 18</p>
+      </div>
+      <div class="flex gap-3 no-print">
+        <button onclick="window.print()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-sm font-medium transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          Export PDF
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 no-print" id="nav">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex gap-6 overflow-x-auto">
+      <a href="#overview" class="nav-tab active py-3 px-1 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap">Overview</a>
+      <a href="#charts" class="nav-tab py-3 px-1 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap">Charts</a>
+      <a href="#gitlab" class="nav-tab py-3 px-1 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap">GitLab</a>
+      <a href="#team" class="nav-tab py-3 px-1 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap">Team</a>
+      <a href="#insights" class="nav-tab py-3 px-1 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap">Insights</a>
+      <a href="#capacity" class="nav-tab py-3 px-1 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap">Capacity</a>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-6 py-8 space-y-10">
+
+<!-- =============== OVERVIEW SECTION =============== -->
+<section id="overview">
+  <div class="flex items-center gap-3 mb-6">
+    <h2 class="text-2xl font-bold text-slate-900">Executive Summary</h2>
+    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">Partial &mdash; 1 day remaining</span>
+  </div>
+
+  <!-- Hero KPI Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <!-- Issues Completed -->
+    <div class="card p-5 animate-fade-in-up stagger-1">
+      <div class="text-sm font-medium text-slate-500 mb-1">Issues Completed</div>
+      <div class="text-3xl font-extrabold text-slate-900 mb-2">69<span class="text-lg text-slate-400 font-medium"> / 153</span></div>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold delta-negative">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+        -47 vs C86 (partial)
+      </div>
+    </div>
+
+    <!-- Points Delivered -->
+    <div class="card p-5 animate-fade-in-up stagger-2">
+      <div class="text-sm font-medium text-slate-500 mb-1">Points Delivered</div>
+      <div class="text-3xl font-extrabold text-slate-900 mb-2">98<span class="text-lg text-slate-400 font-medium"> / 250</span></div>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold delta-negative">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+        -90 vs C86 (partial)
+      </div>
+    </div>
+
+    <!-- Completion Rate -->
+    <div class="card p-5 animate-fade-in-up stagger-3">
+      <div class="text-sm font-medium text-slate-500 mb-1">Completion Rate</div>
+      <div class="text-3xl font-extrabold text-slate-900 mb-2">39.2%</div>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold delta-negative">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+        -26.1 pp vs C86 (partial)
+      </div>
+    </div>
+
+    <!-- Active Contributors -->
+    <div class="card p-5 animate-fade-in-up stagger-4">
+      <div class="text-sm font-medium text-slate-500 mb-1">Active Contributors</div>
+      <div class="text-3xl font-extrabold text-slate-900 mb-2">14</div>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold delta-positive">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"/></svg>
+        +2 vs C86
+      </div>
+    </div>
+  </div>
+
+  <!-- Narrative Summary -->
+  <div class="card p-6 mb-6">
+    <p class="text-slate-700 leading-relaxed">
+      <strong>Cycle 87 is in progress</strong> with one day remaining. Through Day 6, the team has completed <strong>69 of 153 issues</strong> (98 of 250 points), tracking at a <strong>39.2% completion rate</strong>. While this is below Cycle 86's final 65.3%, it is important to note that scope grew significantly throughout the cycle (from 203 to 250 points). Currently <strong>25 issues are in review</strong> (46 points) which could materially improve final numbers. The cycle features 14 active contributors &mdash; 2 more than C86. Notable trends include a doubling of code churn (41.8K lines vs 20.3K in C86) driven by large productionization efforts, and a strong performance from <strong>Samson Liu</strong> who has achieved a perfect 100% completion rate. <strong>57 issues</strong> are projected to carry over if not resolved by end of day tomorrow.
+    </p>
+  </div>
+
+  <!-- Fun fact callout -->
+  <div class="fun-fact-card mb-6 animate-slide-in">
+    <div class="flex items-start gap-3">
+      <span class="text-2xl">&#127942;</span>
+      <div>
+        <div class="font-semibold text-amber-900 mb-1">Cycle 86 Highlight</div>
+        <p class="text-amber-800 text-sm">Cycle 86 achieved a <strong>PERFECT 0 carryover</strong> &mdash; every single issue was either completed or canceled. That's exceptionally rare for a team of this size!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Breakdown Grid -->
+  <h3 class="text-lg font-semibold text-slate-900 mb-4">Current Status Breakdown</h3>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+    <div class="card p-4 border-l-4" style="border-left-color:#10B981;">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">Completed</div>
+      <div class="text-xl font-bold text-slate-900">77</div>
+      <div class="text-sm text-slate-500">117 pts</div>
+    </div>
+    <div class="card p-4 border-l-4" style="border-left-color:#6366F1;">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">In Review</div>
+      <div class="text-xl font-bold text-slate-900">25</div>
+      <div class="text-sm text-slate-500">46 pts</div>
+    </div>
+    <div class="card p-4 border-l-4" style="border-left-color:#3B82F6;">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">In Progress</div>
+      <div class="text-xl font-bold text-slate-900">10</div>
+      <div class="text-sm text-slate-500">20 pts</div>
+    </div>
+    <div class="card p-4 border-l-4" style="border-left-color:#F59E0B;">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">Not Ready</div>
+      <div class="text-xl font-bold text-slate-900">11</div>
+      <div class="text-sm text-slate-500">13 pts</div>
+    </div>
+    <div class="card p-4 border-l-4" style="border-left-color:#64748B;">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">Canceled</div>
+      <div class="text-xl font-bold text-slate-900">9</div>
+      <div class="text-sm text-slate-500">14 pts</div>
+    </div>
+    <div class="card p-4 border-l-4" style="border-left-color:#94A3B8;">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">Todo</div>
+      <div class="text-xl font-bold text-slate-900">5</div>
+      <div class="text-sm text-slate-500">7 pts</div>
+    </div>
+    <div class="card p-4 border-l-4" style="border-left-color:#EF4444;">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">Blocked</div>
+      <div class="text-xl font-bold text-slate-900">3</div>
+      <div class="text-sm text-slate-500">3 pts</div>
+    </div>
+    <div class="card p-4 border-l-4" style="border-left-color:#CBD5E1;">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">Backlog</div>
+      <div class="text-xl font-bold text-slate-900">3</div>
+      <div class="text-sm text-slate-500">9 pts</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Fun fact divider -->
+<div class="insight-card mb-6">
+  <div class="flex items-start gap-3">
+    <span class="text-2xl">&#128187;</span>
+    <div>
+      <div class="font-semibold text-purple-900 mb-1">Code Volume Insight</div>
+      <p class="text-purple-800 text-sm">Cycle 87 has <strong>2x the code churn</strong> of Cycle 86 (41.8K vs 20.3K lines changed) but fewer commits (56 vs 75), meaning bigger, more impactful changes per commit.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =============== CHARTS SECTION =============== -->
+<section id="charts">
+  <h2 class="text-2xl font-bold text-slate-900 mb-6">Charts & Visualizations</h2>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Daily Burndown -->
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">Daily Progress &mdash; Scope (Points)</h3>
+      <div style="height:320px;"><canvas id="burndownChart"></canvas></div>
+    </div>
+
+    <!-- Status Distribution -->
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">Status Distribution (Issues)</h3>
+      <div style="height:320px;"><canvas id="statusChart"></canvas></div>
+    </div>
+
+    <!-- Velocity Trend -->
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">Velocity Trend (6 Cycles)</h3>
+      <div style="height:320px;"><canvas id="velocityChart"></canvas></div>
+    </div>
+
+    <!-- Priority Distribution -->
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">Priority Distribution (Points)</h3>
+      <div style="height:320px;"><canvas id="priorityChart"></canvas></div>
+    </div>
+
+    <!-- Label Distribution -->
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">Label Breakdown</h3>
+      <div style="height:320px;"><canvas id="labelChart"></canvas></div>
+    </div>
+
+    <!-- Cycle Comparison -->
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">Cycle 87 vs Cycle 86</h3>
+      <div style="height:320px;"><canvas id="comparisonChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Fun fact divider -->
+<div class="fun-fact-card mb-6">
+  <div class="flex items-start gap-3">
+    <span class="text-2xl">&#128640;</span>
+    <div>
+      <div class="font-semibold text-amber-900 mb-1">Main Character Energy</div>
+      <p class="text-amber-800 text-sm">The <strong>KBB Automated workflow</strong> is this cycle's main character &mdash; featuring heavily in commits from Daniel, Samson, Colin, and Maksym.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =============== GITLAB SECTION =============== -->
+<section id="gitlab">
+  <h2 class="text-2xl font-bold text-slate-900 mb-6">GitLab Code Activity</h2>
+
+  <!-- GitLab KPI Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="card p-5 animate-fade-in-up">
+      <div class="text-sm font-medium text-slate-500 mb-1">Commits</div>
+      <div class="text-3xl font-extrabold text-slate-900 mb-2 font-mono">56</div>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold delta-negative">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+        -19 vs C86
+      </div>
+    </div>
+    <div class="card p-5 animate-fade-in-up">
+      <div class="text-sm font-medium text-slate-500 mb-1">MRs Merged</div>
+      <div class="text-3xl font-extrabold text-slate-900 mb-2 font-mono">51</div>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold delta-negative">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+        -22 vs C86
+      </div>
+    </div>
+    <div class="card p-5 animate-fade-in-up">
+      <div class="text-sm font-medium text-slate-500 mb-1">Lines Added</div>
+      <div class="text-3xl font-extrabold text-slate-900 mb-2 font-mono">30.4K</div>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold delta-positive">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"/></svg>
+        +76% vs C86
+      </div>
+    </div>
+    <div class="card p-5 animate-fade-in-up">
+      <div class="text-sm font-medium text-slate-500 mb-1">Lines Changed</div>
+      <div class="text-3xl font-extrabold text-slate-900 mb-2 font-mono">41.8K</div>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold delta-positive">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"/></svg>
+        +106% vs C86
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-4 bg-blue-50 border-blue-200 mb-6 text-sm text-blue-800">
+    <strong>Note:</strong> Lines changed doubled from C86 largely due to JC's productionization of the automated comp selection algorithm (12,903 lines in a single commit!).
+  </div>
+
+  <!-- Commits by Author Chart -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">Commits by Author (C87)</h3>
+      <div style="height:360px;"><canvas id="commitsAuthorChart"></canvas></div>
+    </div>
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">MRs Merged by Author (C87)</h3>
+      <div style="height:360px;"><canvas id="mrsAuthorChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- GitLab Tables -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="card overflow-hidden">
+      <div class="px-5 py-3 bg-slate-50 border-b border-slate-100">
+        <h3 class="text-sm font-semibold text-slate-700">Commits &amp; Lines &mdash; Cycle 87</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase">
+            <th class="text-left px-4 py-2">Author</th>
+            <th class="text-right px-4 py-2">Commits</th>
+            <th class="text-right px-4 py-2">Added</th>
+            <th class="text-right px-4 py-2">Deleted</th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr><td class="px-4 py-2 font-medium">Daniel Sorichetti</td><td class="text-right px-4 py-2 font-mono">12</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+1,842</td><td class="text-right px-4 py-2 font-mono text-rose-500">-806</td></tr>
+            <tr><td class="px-4 py-2 font-medium">JC Arbelbide</td><td class="text-right px-4 py-2 font-mono">12</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+17,554</td><td class="text-right px-4 py-2 font-mono text-rose-500">-5,011</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Samson Liu</td><td class="text-right px-4 py-2 font-mono">10</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+960</td><td class="text-right px-4 py-2 font-mono text-rose-500">-614</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Colin Maretsky</td><td class="text-right px-4 py-2 font-mono">8</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+371</td><td class="text-right px-4 py-2 font-mono text-rose-500">-113</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Real Limoges</td><td class="text-right px-4 py-2 font-mono">8</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+9,593</td><td class="text-right px-4 py-2 font-mono text-rose-500">-4,908</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Maksym Butsykin</td><td class="text-right px-4 py-2 font-mono">3</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+27</td><td class="text-right px-4 py-2 font-mono text-rose-500">-1</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Mike Coleman</td><td class="text-right px-4 py-2 font-mono">1</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+11</td><td class="text-right px-4 py-2 font-mono text-rose-500">-4</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Cody Stoltman</td><td class="text-right px-4 py-2 font-mono">1</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+1</td><td class="text-right px-4 py-2 font-mono text-rose-500">-1</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Aleksander Jaworski</td><td class="text-right px-4 py-2 font-mono">1</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+4</td><td class="text-right px-4 py-2 font-mono text-rose-500">-4</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card overflow-hidden">
+      <div class="px-5 py-3 bg-slate-50 border-b border-slate-100">
+        <h3 class="text-sm font-semibold text-slate-700">Commits &amp; Lines &mdash; Cycle 86</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase">
+            <th class="text-left px-4 py-2">Author</th>
+            <th class="text-right px-4 py-2">Commits</th>
+            <th class="text-right px-4 py-2">Added</th>
+            <th class="text-right px-4 py-2">Deleted</th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr><td class="px-4 py-2 font-medium">Daniel Sorichetti</td><td class="text-right px-4 py-2 font-mono">16</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+3,175</td><td class="text-right px-4 py-2 font-mono text-rose-500">-602</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Samson Liu</td><td class="text-right px-4 py-2 font-mono">14</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+4,080</td><td class="text-right px-4 py-2 font-mono text-rose-500">-1,483</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Maksym Butsykin</td><td class="text-right px-4 py-2 font-mono">13</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+303</td><td class="text-right px-4 py-2 font-mono text-rose-500">-91</td></tr>
+            <tr><td class="px-4 py-2 font-medium">JC Arbelbide</td><td class="text-right px-4 py-2 font-mono">6</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+258</td><td class="text-right px-4 py-2 font-mono text-rose-500">-58</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Cody Stoltman</td><td class="text-right px-4 py-2 font-mono">6</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+588</td><td class="text-right px-4 py-2 font-mono text-rose-500">-160</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Mike Coleman</td><td class="text-right px-4 py-2 font-mono">6</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+1,409</td><td class="text-right px-4 py-2 font-mono text-rose-500">-208</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Real Limoges</td><td class="text-right px-4 py-2 font-mono">5</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+6,076</td><td class="text-right px-4 py-2 font-mono text-rose-500">-251</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Aleksander Jaworski</td><td class="text-right px-4 py-2 font-mono">4</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+556</td><td class="text-right px-4 py-2 font-mono text-rose-500">-88</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Colin Maretsky</td><td class="text-right px-4 py-2 font-mono">4</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+666</td><td class="text-right px-4 py-2 font-mono text-rose-500">-174</td></tr>
+            <tr><td class="px-4 py-2 font-medium">Gino Trombetti</td><td class="text-right px-4 py-2 font-mono">1</td><td class="text-right px-4 py-2 font-mono text-emerald-600">+119</td><td class="text-right px-4 py-2 font-mono text-rose-500">-3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fun fact inline -->
+  <div class="fun-fact-card mb-2">
+    <div class="flex items-start gap-3">
+      <span class="text-2xl">&#128218;</span>
+      <p class="text-amber-800 text-sm"><strong>JC Arbelbide's</strong> single commit for TF-7041 (productionizing automated comp selection) contained <strong>12,903 lines</strong> &mdash; that's like writing a small novel in code.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Fun fact divider -->
+<div class="insight-card mb-6">
+  <div class="flex items-start gap-3">
+    <span class="text-2xl">&#127758;</span>
+    <p class="text-purple-800 text-sm">The team spans at least <strong>4 time zones</strong> (EST, CST, CET, EET) based on commit timestamps &mdash; true asynchronous collaboration.</p>
+  </div>
+</div>
+
+<!-- =============== TEAM SECTION =============== -->
+<section id="team">
+  <h2 class="text-2xl font-bold text-slate-900 mb-6">Team Performance</h2>
+
+  <!-- Team Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8" id="teamCards">
+    <!-- Filled by JS -->
+  </div>
+
+  <!-- Full Performance Table -->
+  <div class="card overflow-hidden mb-6">
+    <div class="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+      <h3 class="text-sm font-semibold text-slate-700">Full Performance Table &mdash; Cycle 87</h3>
+      <span class="text-xs text-slate-400">Sorted by completion rate (points)</span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase">
+          <th class="text-left px-4 py-2">Name</th>
+          <th class="text-right px-4 py-2">Issues</th>
+          <th class="text-right px-4 py-2">Points</th>
+          <th class="text-right px-4 py-2">Rate (pts)</th>
+          <th class="text-right px-4 py-2">C86 Rate</th>
+          <th class="text-right px-4 py-2">Delta</th>
+        </tr></thead>
+        <tbody class="divide-y divide-slate-100" id="perfTableBody">
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Fun fact inline -->
+  <div class="fun-fact-card mb-2">
+    <div class="flex items-start gap-3">
+      <span class="text-2xl">&#11088;</span>
+      <p class="text-amber-800 text-sm"><strong>Daniel Sorichetti</strong> leads in both Linear issues (17 completed) AND GitLab commits (12) this cycle &mdash; a true full-stack workhorse.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============== INSIGHTS SECTION =============== -->
+<section id="insights">
+  <h2 class="text-2xl font-bold text-slate-900 mb-6">Insights &amp; Fun Facts</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+    <div class="fun-fact-card">
+      <div class="flex items-start gap-3">
+        <span class="text-2xl">&#127942;</span>
+        <div>
+          <div class="font-semibold text-amber-900 text-sm mb-1">Perfect Score</div>
+          <p class="text-amber-800 text-sm">Samson Liu achieved a flawless <strong>100% completion rate</strong> &mdash; 10 for 10 issues, 17 for 17 points. No dropped balls.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="flex items-start gap-3">
+        <span class="text-2xl">&#128200;</span>
+        <div>
+          <div class="font-semibold text-purple-900 text-sm mb-1">Colin's Growth Spurt</div>
+          <p class="text-purple-800 text-sm">Colin Maretsky jumped from <strong>3 MRs in C86 to 8 in C87</strong> &mdash; a 167% increase!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="flex items-start gap-3">
+        <span class="text-2xl">&#128295;</span>
+        <div>
+          <div class="font-semibold text-purple-900 text-sm mb-1">Surgical Cleanup</div>
+          <p class="text-purple-800 text-sm">Real Limoges' ML Service cleanup was a <strong>3-part surgical operation</strong>: Foundation, Infrastructure, then Business Logic &mdash; removing nearly 5,000 lines of technical debt.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fun-fact-card">
+      <div class="flex items-start gap-3">
+        <span class="text-2xl">&#128293;</span>
+        <div>
+          <div class="font-semibold text-amber-900 text-sm mb-1">Bigger Bites</div>
+          <p class="text-amber-800 text-sm">Average lines changed per commit: <strong>747 in C87</strong> vs 271 in C86. The team is shipping larger, more consolidated changes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fun-fact-card">
+      <div class="flex items-start gap-3">
+        <span class="text-2xl">&#127874;</span>
+        <div>
+          <div class="font-semibold text-amber-900 text-sm mb-1">Repo Birthday</div>
+          <p class="text-amber-800 text-sm">The repo has been alive since April 2022, making it almost <strong>4 years old</strong>. It has 3 stars on GitLab.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="flex items-start gap-3">
+        <span class="text-2xl">&#128101;</span>
+        <div>
+          <div class="font-semibold text-purple-900 text-sm mb-1">Growing Team</div>
+          <p class="text-purple-800 text-sm">14 contributors in C87 vs 12 in C86, with <strong>Kyle Reich and Will Fried</strong> joining the roster this cycle.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============== CAPACITY SECTION =============== -->
+<section id="capacity">
+  <h2 class="text-2xl font-bold text-slate-900 mb-6">Capacity Planning</h2>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">6-Cycle Velocity Summary</h3>
+      <table class="w-full text-sm">
+        <thead><tr class="text-slate-500 text-xs uppercase border-b">
+          <th class="text-left py-2">Metric</th>
+          <th class="text-right py-2">Average</th>
+          <th class="text-right py-2">Min</th>
+          <th class="text-right py-2">Max</th>
+        </tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-2 font-medium">Completed Issues</td><td class="text-right py-2 font-mono">77.5</td><td class="text-right py-2 font-mono text-slate-400">48</td><td class="text-right py-2 font-mono text-slate-400">116</td></tr>
+          <tr><td class="py-2 font-medium">Completed Points</td><td class="text-right py-2 font-mono">120.0</td><td class="text-right py-2 font-mono text-slate-400">88</td><td class="text-right py-2 font-mono text-slate-400">188</td></tr>
+          <tr><td class="py-2 font-medium">Total Issues</td><td class="text-right py-2 font-mono">138.3</td><td class="text-right py-2 font-mono text-slate-400">111</td><td class="text-right py-2 font-mono text-slate-400">174</td></tr>
+          <tr><td class="py-2 font-medium">Total Points</td><td class="text-right py-2 font-mono">225.7</td><td class="text-right py-2 font-mono text-slate-400">180</td><td class="text-right py-2 font-mono text-slate-400">288</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-slate-900 mb-4">Cycle 88 Forecast</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Expected completed points range</span>
+            <span class="font-mono font-semibold">88 &ndash; 188</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill bg-brand-500" style="width:53%; position:relative;">
+              <div style="position:absolute;right:-4px;top:-4px;width:16px;height:16px;border-radius:50%;background:#4F46E5;border:2px solid white;"></div>
+            </div>
+          </div>
+          <div class="text-xs text-slate-400 mt-1">6-cycle average: 120 pts</div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Expected completed issues range</span>
+            <span class="font-mono font-semibold">48 &ndash; 116</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill bg-emerald-500" style="width:53%; position:relative;">
+              <div style="position:absolute;right:-4px;top:-4px;width:16px;height:16px;border-radius:50%;background:#10B981;border:2px solid white;"></div>
+            </div>
+          </div>
+          <div class="text-xs text-slate-400 mt-1">6-cycle average: 77.5 issues</div>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-lg text-sm text-slate-600 mt-4">
+          <strong>Trend analysis:</strong> Velocity has been <strong>trending upward</strong> since the C84 trough (88 pts). The last 2 completed cycles (C85: 117 pts, C86: 188 pts) show strong momentum. If C87 finishes with ~120 pts, the 3-cycle moving average would be ~142 pts &mdash; suggesting Cycle 88 could target <strong>130&ndash;150 points</strong> comfortably.
+          <br><br>
+          <strong>Carryover note:</strong> With 57 issues currently projected to carry into C88, expect the next cycle to start with significant pre-loaded scope. Plan capacity accordingly.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-400 mt-12">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="text-white font-bold text-lg mb-1">Truefootage</div>
+        <div class="text-sm">Cycle 87 End-of-Cycle Report &bull; Generated Feb 18, 2026</div>
+      </div>
+      <div class="text-sm text-slate-500">
+        Data sourced from Linear &amp; GitLab &bull; Report is partial (Day 6 of 7)
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============= DATA =============
+const COLORS = {
+  indigo: '#6366F1', indigoDark: '#4F46E5', indigoLight: '#A5B4FC',
+  emerald: '#10B981', emeraldLight: '#6EE7B7',
+  amber: '#F59E0B', amberLight: '#FCD34D',
+  rose: '#F43F5E', roseLight: '#FDA4AF',
+  blue: '#3B82F6', blueLight: '#93C5FD',
+  purple: '#8B5CF6', purpleLight: '#C4B5FD',
+  slate: '#64748B', slateLight: '#CBD5E1',
+  teal: '#14B8A6', cyan: '#06B6D4',
+  orange: '#F97316', pink: '#EC4899',
+};
+
+// ============= TEAM DATA =============
+const teamC87 = [
+  { name: 'Daniel Sorichetti', done: 17, total: 31, pts: 26, totalPts: 45, rate: 58, focus: 'KBB Automated & Forced Reasoning' },
+  { name: 'Mariusz Wojakowski', done: 16, total: 21, pts: 21, totalPts: 29, rate: 72, focus: 'Frontend feature development' },
+  { name: 'Samson Liu', done: 10, total: 10, pts: 17, totalPts: 17, rate: 100, focus: 'KBB Automated workflow' },
+  { name: 'Colin Maretsky', done: 10, total: 11, pts: 15, totalPts: 17, rate: 88, focus: 'KBB Automated frontend' },
+  { name: 'JC Arbelbide', done: 8, total: 14, pts: 11, totalPts: 22, rate: 50, focus: 'Automated comp selection algorithm' },
+  { name: 'Mike Coleman', done: 3, total: 8, pts: 8, totalPts: 17, rate: 47, focus: 'Forced reasoning & report tooling' },
+  { name: 'Real', done: 3, total: 13, pts: 5, totalPts: 26, rate: 19, focus: 'ML Service cleanup (3-part refactor)' },
+  { name: 'Michal Raczyk', done: 2, total: 3, pts: 5, totalPts: 8, rate: 62, focus: 'Frontend improvements' },
+  { name: 'Maksym Butsykin', done: 4, total: 8, pts: 4, totalPts: 9, rate: 44, focus: 'KBB Automated configuration' },
+  { name: 'Aleksander Jaworski', done: 2, total: 6, pts: 3, totalPts: 10, rate: 30, focus: 'Backend improvements' },
+  { name: 'Cody Stoltman', done: 1, total: 4, pts: 1, totalPts: 7, rate: 14, focus: 'Bug fixes' },
+  { name: 'Will Fried', done: 1, total: 12, pts: 1, totalPts: 19, rate: 5, focus: 'Large scope in progress' },
+  { name: 'Gino Trombetti', done: 0, total: 1, pts: 0, totalPts: 2, rate: 0, focus: 'Backend work' },
+  { name: 'Kyle Reich', done: 0, total: 1, pts: 0, totalPts: 1, rate: 0, focus: 'New to cycle' },
+];
+
+const c86Rates = {
+  'Daniel Sorichetti': 95, 'Mike Coleman': 94, 'Mariusz Wojakowski': 97,
+  'Cody Stoltman': 94, 'Maksym Butsykin': 100, 'Michal Raczyk': 100,
+  'Samson Liu': 85, 'JC Arbelbide': 77, 'Colin Maretsky': 82,
+  'Real': 80, 'Aleksander Jaworski': 88, 'Gino Trombetti': 100,
+};
+
+// ============= RENDER TEAM CARDS =============
+const cardsContainer = document.getElementById('teamCards');
+teamC87.forEach(m => {
+  const rateColor = m.rate >= 80 ? 'bg-emerald-500' : m.rate >= 50 ? 'bg-amber-500' : m.rate >= 20 ? 'bg-orange-500' : 'bg-rose-500';
+  const badge = m.rate === 100 ? '<span class="ml-2 text-xs bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-semibold">PERFECT</span>' : '';
+  cardsContainer.innerHTML += `
+    <div class="card p-4">
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xs">${m.name.split(' ').map(n=>n[0]).join('')}</div>
+        <div class="font-semibold text-sm text-slate-900 truncate">${m.name}${badge}</div>
+      </div>
+      <div class="grid grid-cols-3 gap-2 text-center mb-3">
+        <div><div class="text-lg font-bold text-slate-900">${m.done}</div><div class="text-xs text-slate-400">Done</div></div>
+        <div><div class="text-lg font-bold text-slate-900">${m.pts}</div><div class="text-xs text-slate-400">Pts</div></div>
+        <div><div class="text-lg font-bold ${m.rate >= 80 ? 'text-emerald-600' : m.rate >= 50 ? 'text-amber-600' : 'text-rose-600'}">${m.rate}%</div><div class="text-xs text-slate-400">Rate</div></div>
+      </div>
+      <div class="progress-bar-bg mb-2"><div class="progress-bar-fill ${rateColor}" style="width:${m.rate}%"></div></div>
+      <div class="text-xs text-slate-500">${m.focus}</div>
+    </div>
+  `;
+});
+
+// ============= RENDER PERFORMANCE TABLE =============
+const tbody = document.getElementById('perfTableBody');
+const sorted = [...teamC87].sort((a,b) => b.rate - a.rate);
+sorted.forEach(m => {
+  const c86 = c86Rates[m.name];
+  const delta = c86 !== undefined ? m.rate - c86 : null;
+  const deltaHtml = delta !== null
+    ? `<span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-xs font-semibold ${delta >= 0 ? 'delta-positive' : 'delta-negative'}">${delta >= 0 ? '+' : ''}${delta}pp</span>`
+    : '<span class="text-xs text-slate-300">N/A</span>';
+  const c86Html = c86 !== undefined ? `${c86}%` : '<span class="text-slate-300">--</span>';
+  tbody.innerHTML += `
+    <tr>
+      <td class="px-4 py-2 font-medium">${m.name}</td>
+      <td class="text-right px-4 py-2 font-mono">${m.done}/${m.total}</td>
+      <td class="text-right px-4 py-2 font-mono">${m.pts}/${m.totalPts}</td>
+      <td class="text-right px-4 py-2 font-mono font-semibold">${m.rate}%</td>
+      <td class="text-right px-4 py-2 font-mono">${c86Html}</td>
+      <td class="text-right px-4 py-2">${deltaHtml}</td>
+    </tr>
+  `;
+});
+
+// ============= CHARTS =============
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#64748B';
+
+// --- Daily Burndown ---
+new Chart(document.getElementById('burndownChart'), {
+  type: 'line',
+  data: {
+    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
+    datasets: [
+      { label: 'Total Scope', data: [203, 231, 239, 239, 243, 250], borderColor: COLORS.slateLight, backgroundColor: 'rgba(203,213,225,0.1)', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 4 },
+      { label: 'Completed Scope', data: [29, 73, 78, 78, 87, 98], borderColor: COLORS.indigo, backgroundColor: 'rgba(99,102,241,0.1)', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: { y: { beginAtZero: true, grid: { color: '#F1F5F9' } }, x: { grid: { display: false } } }
+  }
+});
+
+// --- Status Distribution ---
+new Chart(document.getElementById('statusChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Completed', 'In Review', 'Not Ready', 'In Progress', 'Canceled', 'Todo', 'Blocked', 'Backlog'],
+    datasets: [{
+      data: [77, 25, 11, 10, 9, 5, 3, 3],
+      backgroundColor: [COLORS.emerald, COLORS.indigo, COLORS.amber, COLORS.blue, COLORS.slate, COLORS.slateLight, COLORS.rose, '#E2E8F0'],
+      borderWidth: 2, borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'right', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } } },
+    cutout: '55%',
+  }
+});
+
+// --- Velocity Trend ---
+new Chart(document.getElementById('velocityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['C82', 'C83', 'C84', 'C85', 'C86', 'C87*'],
+    datasets: [
+      { label: 'Completed Points', data: [130, 99, 88, 117, 188, 98], backgroundColor: COLORS.indigo, borderRadius: 4, order: 1 },
+      { label: 'Total Points', data: [193, 180, 199, 244, 288, 250], backgroundColor: '#E0E7FF', borderRadius: 4, order: 2 },
+      { label: 'Completed Issues', data: [89, 63, 48, 80, 116, 69], type: 'line', borderColor: COLORS.emerald, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 4, yAxisID: 'y1', order: 0 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#F1F5F9' }, title: { display: true, text: 'Points' } },
+      y1: { beginAtZero: true, position: 'right', grid: { display: false }, title: { display: true, text: 'Issues' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// --- Priority Distribution ---
+new Chart(document.getElementById('priorityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['No Priority', 'High', 'Medium', 'Low', 'Urgent'],
+    datasets: [{
+      label: 'Points',
+      data: [127, 37, 29, 28, 8],
+      backgroundColor: [COLORS.slateLight, COLORS.rose, COLORS.amber, COLORS.blue, '#DC2626'],
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true, grid: { color: '#F1F5F9' } }, y: { grid: { display: false } } }
+  }
+});
+
+// --- Label Distribution ---
+new Chart(document.getElementById('labelChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Frontend', 'Bug', 'Improvement', 'Spike', 'ML Service', 'Regression'],
+    datasets: [
+      { label: 'Completed', data: [7, 2, 4, 0, 0, 2], backgroundColor: COLORS.emerald, borderRadius: 4 },
+      { label: 'Remaining', data: [7, 7, 3, 2, 2, 0], backgroundColor: '#E0E7FF', borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: { y: { beginAtZero: true, stacked: true, grid: { color: '#F1F5F9' } }, x: { stacked: true, grid: { display: false } } }
+  }
+});
+
+// --- Cycle Comparison ---
+new Chart(document.getElementById('comparisonChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Total Issues', 'Completed Issues', 'Total Points', 'Completed Points', 'Canceled'],
+    datasets: [
+      { label: 'Cycle 87 (partial)', data: [153, 69, 250, 98, 9], backgroundColor: COLORS.indigo, borderRadius: 4 },
+      { label: 'Cycle 86', data: [174, 116, 288, 188, 13], backgroundColor: COLORS.slateLight, borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: { y: { beginAtZero: true, grid: { color: '#F1F5F9' } }, x: { grid: { display: false } } }
+  }
+});
+
+// --- Commits by Author ---
+new Chart(document.getElementById('commitsAuthorChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Daniel S.', 'JC A.', 'Samson L.', 'Colin M.', 'Real L.', 'Maksym B.', 'Mike C.', 'Cody S.', 'Aleksander J.'],
+    datasets: [{
+      label: 'Commits',
+      data: [12, 12, 10, 8, 8, 3, 1, 1, 1],
+      backgroundColor: COLORS.indigo,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true, grid: { color: '#F1F5F9' } }, y: { grid: { display: false } } }
+  }
+});
+
+// --- MRs by Author ---
+new Chart(document.getElementById('mrsAuthorChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Daniel S.', 'JC A.', 'Colin M.', 'Samson L.', 'Real L.', 'Maksym B.', 'Mike C.', 'Cody S.', 'Aleksander J.'],
+    datasets: [{
+      label: 'MRs Merged',
+      data: [13, 10, 8, 8, 6, 3, 1, 1, 1],
+      backgroundColor: COLORS.purple,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true, grid: { color: '#F1F5F9' } }, y: { grid: { display: false } } }
+  }
+});
+
+// ============= NAV SCROLL TRACKING =============
+const sections = document.querySelectorAll('section[id]');
+const navTabs = document.querySelectorAll('.nav-tab');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navTabs.forEach(tab => {
+    tab.classList.toggle('active', tab.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>
