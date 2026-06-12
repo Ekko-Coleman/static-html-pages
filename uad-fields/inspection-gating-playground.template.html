@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inspection Field Workbench — UAD 3.6 Conditionality</title>
+<style>
+  :root{
+    --bg:#0e1014; --bg2:#12151b; --panel:#161a21; --panel2:#1c212b; --panel3:#222936; --line:#2a3140; --line2:#363f50;
+    --txt:#e8ebf2; --muted:#98a2b3; --faint:#6b7585;
+    --blue:#5b9dff; --green:#43d39e; --amber:#f7b955; --purple:#b98cff; --orange:#ff9d52; --teal:#3bd0c8; --pink:#ff77ab; --red:#ff6171; --grey:#7e8799;
+    --ink:#0c0e12; --focus:#5b9dff; --r:10px; --r2:8px;
+    --sh:0 1px 2px #0006,0 8px 24px #0004;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--txt);font:13.5px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  ::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#2c3340;border-radius:6px;border:2px solid var(--bg)}::-webkit-scrollbar-track{background:transparent}
+  button{font:inherit}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  /* header */
+  header{height:54px;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#171b23,#12151b);position:sticky;top:0;z-index:30}
+  .brand{display:flex;align-items:center;gap:10px}
+  .logo{width:22px;height:22px;border-radius:7px;background:conic-gradient(from 220deg,var(--blue),var(--purple),var(--teal),var(--blue))}
+  header h1{font-size:14.5px;font-weight:680;margin:0;letter-spacing:.2px}
+  header .sub{font-size:11px;color:var(--muted)}
+  .stats{margin-left:auto;display:flex;gap:8px}
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:5px 11px;text-align:center;min-width:62px}
+  .stat b{display:block;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+  .stat span{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .stat.act b{color:var(--green)} .stat.hid b{color:var(--faint)} .stat.fil b{color:var(--blue)}
+  /* layout */
+  .layout{display:flex;height:calc(100vh - 54px)}
+  aside.left{width:300px;min-width:300px;overflow:auto;border-right:1px solid var(--line);background:var(--bg2);padding:14px 13px 60px}
+  main{flex:1;overflow:auto;padding:16px 20px 80px;min-width:0}
+  aside.right{width:430px;min-width:430px;overflow:auto;border-left:1px solid var(--line);background:var(--panel);padding:0}
+  @media(max-width:1180px){aside.right{width:360px;min-width:360px}}
+  /* left panel */
+  .lh{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+  .lh:first-child{margin-top:0}
+  .lh .ct{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:0 6px;font-size:9.5px;color:var(--muted)}
+  .actions{display:flex;flex-direction:column;gap:7px}
+  .act-btn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:var(--r2);padding:8px 10px;cursor:pointer;font-size:12.5px}
+  .act-btn:hover{border-color:var(--blue);background:var(--panel3)}
+  .act-btn .ic{font-size:13px;width:16px;text-align:center}
+  .act-btn.toggle.on{border-color:var(--blue);background:#5b9dff1c;color:#cfe0ff}
+  .kdf{margin-bottom:9px}
+  .kdf label{display:block;font-size:11.5px;color:var(--txt);margin-bottom:3px;font-weight:560}
+  .kdf label .gn{color:var(--amber);font-weight:700;font-size:10px;margin-left:4px}
+  .ctl-sel{width:100%;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:7px;padding:6px 8px;font-size:12px;
+    appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%2398a2b3'/></svg>");background-repeat:no-repeat;background-position:right 9px center}
+  .seg{display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+  .seg button{flex:1;background:var(--panel2);color:var(--muted);border:0;border-right:1px solid var(--line);padding:6px 4px;font-size:11.5px;cursor:pointer}
+  .seg button:last-child{border-right:0}
+  .seg button.on{background:linear-gradient(180deg,var(--blue),#3f86f0);color:#fff;font-weight:650}
+  /* tree */
+  .pagebar{display:flex;align-items:center;gap:10px;margin:18px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .pagebar:first-child{margin-top:0}
+  .pagebar h2{font-size:15px;font-weight:700;margin:0}
+  .pagebar .pc{font-size:11px;color:var(--muted)}
+  .mini{margin-left:auto;display:flex;gap:6px}
+  .mini button{background:var(--panel2);border:1px solid var(--line);color:var(--muted);border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer}
+  .mini button:hover{border-color:var(--blue);color:var(--txt)}
+  .section{margin:10px 0 4px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);overflow:hidden}
+  .sec-head{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--panel2);cursor:pointer;border-bottom:1px solid var(--line)}
+  .sec-head .tw{color:var(--muted);font-size:10px;width:12px}
+  .sec-head h3{font-size:12.5px;font-weight:650;margin:0;flex:1}
+  .sec-head .sc{font-size:10.5px;color:var(--muted)}
+  .sec-head .seed{background:#43d39e1a;border:1px solid #43d39e44;color:var(--green);border-radius:6px;padding:3px 8px;font-size:10.5px;cursor:pointer}
+  .sec-head .seed:hover{background:#43d39e2e}
+  .sec-body{padding:4px 6px}
+  /* field row */
+  .f{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:8px;border:1px solid transparent}
+  .f:hover{background:#ffffff07;border-color:var(--line)}
+  .f.sel{background:#5b9dff2e;border-color:var(--blue);box-shadow:inset 3px 0 0 var(--blue),0 0 0 1px #5b9dff44}
+  .f.sel .fname{color:#cfe0ff;font-weight:700}
+  .f.gated{opacity:.4}
+  .f.gated.sel{opacity:.75}
+  .f .dot{width:7px;height:7px;border-radius:50%;flex:0 0 7px}
+  .f .dot.on{background:var(--green);box-shadow:0 0 6px #43d39e88} .f .dot.off{background:#3a4252}
+  .f .fname{font-weight:520;cursor:pointer;flex-shrink:0;max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .f.gated .fname{text-decoration:line-through;text-decoration-color:#ff617155}
+  .cbadge{font-size:8.5px;font-weight:800;border-radius:4px;padding:1px 5px;letter-spacing:.3px}
+  .c-R{background:var(--red);color:#fff}.c-CR{background:var(--amber);color:var(--ink)}.c-O{background:#3a4252;color:var(--muted)}.c-NA{background:transparent;border:1px solid var(--line);color:var(--faint)}
+  .cbadge[data-gatedfocus]{cursor:pointer}
+  .cbadge[data-gatedfocus]:hover{box-shadow:0 0 0 2px #ffffff44}
+  .upd-tag{font-size:9px;font-weight:700;color:var(--purple);background:#b98cff14;border:1px solid #b98cff44;border-radius:4px;padding:0 5px;white-space:nowrap}
+  .c-ok{background:var(--green);color:var(--ink)}
+  .section.complete{border-color:var(--green);box-shadow:0 0 0 1px #43d39e88}
+  .section.complete .sec-head{background:#43d39e14}
+  .section.complete .sec-head h3::after{content:"✓ valid";color:var(--green);font-size:9.5px;font-weight:700;margin-left:8px;letter-spacing:.3px}
+  .pill.on{border-color:#43d39e88;background:#43d39e1f;color:var(--green)}
+  .pill.off{border-color:#ff617188;background:#ff61711a;color:var(--red)}
+  .gates-chip{font-size:9.5px;font-weight:700;color:var(--amber);background:#f7b9551a;border:1px solid #f7b95544;border-radius:5px;padding:1px 6px;cursor:pointer;white-space:nowrap}
+  .gates-chip:hover{background:#f7b9552e}
+  .spawn-chip{font-size:9.5px;font-weight:700;color:var(--teal);background:#3bd0c81c;border:1px solid #3bd0c855;border-radius:5px;padding:1px 6px;white-space:nowrap}
+  .needs{font-size:10.5px;color:var(--faint);margin-left:auto;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46%}
+  .xtag{font-size:9px;border:1px solid;border-radius:4px;padding:0 5px;color:var(--muted)}
+  .finput{margin-left:auto;display:flex;align-items:center;gap:6px;flex:0 0 auto}
+  .finput.full{min-width:170px}
+  .inp{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:4px 7px;font-size:11.5px;max-width:190px}
+  .inp:focus,.ctl-sel:focus,.seg button:focus-visible,.act-btn:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+  .inp.sel-inp{appearance:none;padding-right:22px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%2398a2b3'/></svg>");background-repeat:no-repeat;background-position:right 7px center}
+  .seg.sm button{padding:4px 8px;font-size:11px}
+  .filled-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex:0 0 6px}
+  /* right detail */
+  .dh{padding:16px 18px 13px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#1a1f28,#161a21);position:sticky;top:0;z-index:5}
+  .dh .kick{font-size:10px;font-weight:700;letter-spacing:.7px;color:var(--blue);text-transform:uppercase;margin-bottom:5px}
+  .dh h2{font-size:16px;font-weight:700;margin:0;line-height:1.25;word-break:break-word}
+  .dbody{padding:14px 18px 60px}
+  .blk{margin-bottom:15px}
+  .blk-h{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+  .kv{display:flex;gap:10px;padding:3px 0;font-size:12px}
+  .kv .k{flex:0 0 110px;color:var(--muted)}.kv .v{flex:1;word-break:break-word}
+  .def{font-size:12px;line-height:1.5;color:#cfd5e0;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px 11px;white-space:pre-wrap}
+  .xp{display:block;font-size:10px;line-height:1.5;word-break:break-all;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--teal)}
+  .cond{font-weight:700;padding:1px 8px;border-radius:6px;font-size:11.5px}
+  .ev{font-size:11px;font-weight:700;padding:1px 7px;border-radius:5px}.ev.t{background:#43d39e22;color:var(--green)}.ev.f{background:#ff61711e;color:var(--red)}
+  .grp{border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:6px;background:var(--panel2)}
+  .grp .or{font-size:9.5px;color:var(--amber);font-weight:700;text-align:center;margin:5px 0}
+  .pred{display:flex;align-items:center;gap:7px;font-size:11.5px;padding:2px 0;cursor:pointer}
+  .pred code{color:#cfe0ff}
+  .pill{font-size:10px;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--muted);cursor:pointer}
+  .pill:hover{border-color:var(--blue);color:var(--txt)}
+  .enum{padding:5px 9px;border:1px solid var(--line);border-radius:7px;margin-bottom:4px;background:var(--panel2)}
+  .enum code{color:#cfe0ff} .enum .ed{font-size:10.5px;color:#aab2c0;margin-top:2px;line-height:1.4} .enum .edisp{font-size:10.5px;color:var(--muted);margin-left:7px}
+  .rule{padding:6px 9px;border:1px solid var(--line);border-left-width:3px;border-radius:7px;margin-bottom:5px;background:var(--panel2)}
+  .rule-h{display:flex;gap:7px;align-items:center;margin-bottom:2px}.sev{font-size:9px;font-weight:800;padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .rule-msg{font-size:11px;color:#cfd5e0;line-height:1.4}.rule-lg{font-size:10px;color:var(--muted);font-family:ui-monospace,monospace;margin-top:3px;white-space:pre-wrap;line-height:1.4}
+  .upd{padding:6px 9px;border:1px solid #b98cff44;border-radius:7px;margin-bottom:5px;background:#b98cff10}
+  .upd-h{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:2px}.upd-f{font-weight:650;color:var(--purple)}.upd-n{font-size:10.5px;color:#c4cbd6;white-space:pre-wrap;line-height:1.4;margin-top:2px}
+  .jump{color:var(--blue);cursor:pointer;text-decoration:none;border-bottom:1px dotted #5b9dff66}
+  .help li{margin-bottom:7px;color:#c4ccd8;font-size:12px;line-height:1.5}
+  .help b{color:var(--txt)} .help .kbd{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:10.5px;color:var(--muted)}
+  .legend2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
+  .legi{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
+  .sw{width:11px;height:11px;border-radius:3px;flex:0 0 11px}
+  .muted{color:var(--muted)}
+  /* header search + tools */
+  header{position:relative}
+  .hdr-search{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:7px;
+    width:min(420px,38vw);background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:5px 10px}
+  .hdr-search:focus-within{border-color:var(--blue);box-shadow:0 0 0 2px #5b9dff33}
+  .hdr-search .sic{color:var(--faint);font-size:13px;flex:0 0 auto}
+  .hdr-search input{flex:1;background:transparent;border:0;outline:0;color:var(--txt);font-size:12.5px}
+  .hdr-search input::placeholder{color:var(--faint)}
+  .hdr-search .clr{background:none;border:0;color:var(--faint);cursor:pointer;font-size:13px;padding:0 2px;display:none}
+  .hdr-search .clr:hover{color:var(--txt)}
+  .hdr-search.has .clr{display:block}
+  .hdr-search .rc{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .hdr-btns{display:flex;gap:7px;margin-left:auto}
+  header .stats{margin-left:14px}   /* cancel the original auto so buttons+stats cluster together on the right */
+  .hdr-btn{display:flex;align-items:center;gap:6px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);
+    border-radius:8px;padding:6px 11px;font-size:12px;cursor:pointer}
+  .hdr-btn:hover{border-color:var(--blue);background:var(--panel3)}
+  .hdr-btn .ic{font-size:12px}
+  /* gate-focus spotlight */
+  /* pointer-events:none lets wheel-scroll pass through to main; clicks still bubble to the
+     document capture listener that exits focus mode */
+  #gateBackdrop{position:fixed;inset:0;z-index:40;background:rgba(5,7,10,.74);
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;pointer-events:none}
+  body.gate-focus #gateBackdrop{display:block}
+  /* lifted rows must beat .f.gated{opacity:.4} so gated dependents read clearly */
+  body.gate-focus .f.gate-lift,body.gate-focus .f.gate-source{opacity:1;transform:scale(1.015)}
+  body.gate-focus .f.gate-lift{position:relative;z-index:45;background:var(--panel3);
+    box-shadow:0 10px 34px #000d,0 0 0 1px var(--line2)}
+  body.gate-focus .f.gate-lift .fname{text-decoration:none;color:var(--txt)}
+  body.gate-focus .f.gate-lift .needs{color:var(--muted)}
+  body.gate-focus .f.gate-source{position:relative;z-index:46;background:#27313f;
+    box-shadow:0 10px 40px #000f,0 0 0 1px var(--line2)}
+  /* role/state rings — gated rows: blue=condition satisfied / orange=not; gate rows: green=satisfying / red=not */
+  body.gate-focus .f.gated-on{box-shadow:0 10px 34px #000d,0 0 0 1px var(--blue),0 0 0 4px #5b9dff28}
+  body.gate-focus .f.gated-off{box-shadow:0 10px 34px #000d,0 0 0 1px var(--orange),0 0 0 4px #ff9d5228}
+  body.gate-focus .f.gate-on{box-shadow:0 10px 34px #000d,0 0 0 1px var(--green),0 0 0 4px #43d39e28}
+  body.gate-focus .f.gate-off{box-shadow:0 10px 34px #000d,0 0 0 1px var(--red),0 0 0 4px #ff617128}
+  /* external/desk gates have no main-tree row — lift their left-sidebar control above the backdrop */
+  body.gate-focus .kdf.gate-lift{position:relative;z-index:45;background:var(--panel3);border-radius:8px;padding:6px 7px;margin:0 -7px 9px}
+  body.gate-focus .kdf.gate-lift.gate-on{box-shadow:0 10px 34px #000d,0 0 0 1px var(--green),0 0 0 4px #43d39e28}
+  body.gate-focus .kdf.gate-lift.gate-off{box-shadow:0 10px 34px #000d,0 0 0 1px var(--red),0 0 0 4px #ff617128}
+  body.gate-focus .section{overflow:visible}
+  /* modal */
+  #modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+    background:rgba(6,8,11,.62);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);padding:30px}
+  #modal.on{display:flex}
+  .modal-card{width:min(820px,94vw);max-height:88vh;display:flex;flex-direction:column;
+    background:var(--panel);border:1px solid var(--line2);border-radius:12px;box-shadow:0 20px 60px #000b;overflow:hidden}
+  .modal-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#1a1f28,#161a21)}
+  .modal-head h2{font-size:14.5px;font-weight:680;margin:0;flex:1}
+  .modal-head .mclose{background:var(--panel2);border:1px solid var(--line);color:var(--muted);border-radius:7px;
+    width:26px;height:26px;cursor:pointer;font-size:13px}
+  .modal-head .mclose:hover{border-color:var(--red);color:var(--txt)}
+  .modal-body{padding:14px 16px;overflow:auto}
+  .modal-foot{display:flex;align-items:center;gap:8px;padding:11px 16px;border-top:1px solid var(--line);background:var(--bg2)}
+  .modal-foot .spacer{flex:1}
+  .mbtn{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:7px 13px;font-size:12.5px;cursor:pointer}
+  .mbtn:hover{border-color:var(--blue);background:var(--panel3)}
+  .mbtn.primary{background:linear-gradient(180deg,var(--blue),#3f86f0);border-color:#3f86f0;color:#fff;font-weight:600}
+  .codebox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.5;color:#cfe0ff;
+    background:var(--ink);border:1px solid var(--line);border-radius:8px;padding:12px 13px;white-space:pre;overflow:auto;
+    max-height:58vh;margin:0}
+  .vgrp{margin-bottom:13px}
+  .vgrp-h{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .verr{display:flex;gap:9px;align-items:flex-start;padding:7px 9px;border:1px solid var(--line);border-left-width:3px;
+    border-radius:7px;margin-bottom:5px;background:var(--panel2);cursor:pointer}
+  .verr:hover{border-color:var(--blue)}
+  .verr .vname{font-weight:600;color:var(--txt)}
+  .verr .vmsg{font-size:11px;color:#cfd5e0;line-height:1.4;margin-top:2px}
+  .verr .vmeta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:3px}
+  .vok{text-align:center;padding:34px 10px;color:var(--green);font-size:14px;font-weight:600}
+  .vok .big{font-size:34px;display:block;margin-bottom:6px}
+  .mnote{font-size:10.5px;color:var(--faint);margin-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo"></div>
+    <div><h1>Inspection Field Workbench</h1><div class="sub">UAD 3.6 on-site fields · live conditionality · click any field for spec detail</div></div>
+  </div>
+  <div class="hdr-search" id="searchWrap">
+    <span class="sic">🔍</span>
+    <input id="search" type="text" autocomplete="off" spellcheck="false"
+      placeholder="Search field name, UAD UID, or xPath…">
+    <span class="rc" id="searchCount"></span>
+    <button class="clr" id="searchClear" title="Clear search" aria-label="Clear search">✕</button>
+  </div>
+  <div class="hdr-btns" style="margin-left:auto">
+    <button class="hdr-btn" id="btnValidate"><span class="ic">✔︎</span> Validate</button>
+    <button class="hdr-btn" id="btnExport"><span class="ic">⤓</span> Export</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="sTotal">–</b><span>fields</span></div>
+    <div class="stat act"><b id="sActive">–</b><span>active</span></div>
+    <div class="stat fil"><b id="sFilled">–</b><span>filled</span></div>
+    <div class="stat hid"><b id="sHidden">–</b><span>gated out</span></div>
+  </div>
+</header>
+<div class="layout">
+  <aside class="left" id="left"></aside>
+  <main id="main"></main>
+  <aside class="right" id="right"></aside>
+</div>
+<div id="gateBackdrop"></div>
+<div id="modal" aria-hidden="true"></div>
+
+<script>
+/* ===== generated spec data (UAD 3.6 Appendix A-1 + UPD spec — DO NOT HAND-EDIT) ===== */
+const DATA = /*__DATA__*/{"fields":{},"pages":[],"missingGateFields":[]}/*__END__*/;
+const FIELDS = DATA.fields;
+const PAGES  = DATA.pages;
+const NAMES  = Object.keys(FIELDS);
+
+/* SPAWN (existence-indicator -> child/children) is derived from the model data,
+   which is the source of truth (docs/inspection-field-model.json). */
+const SPAWN = {};
+for (const _n in FIELDS) { if (FIELDS[_n].spawn) SPAWN[_n] = FIELDS[_n].spawn; }
+
+/* ===== state ===== */
+const V = {};                 // field name -> value
+let selected = null;
+let showGated = true;         // darken (show) gated-out fields vs hide them
+let highlightGating = false;  // emphasize fields that gate others
+let query = "";               // header search filter (name / uid / xpath)
+let specMode = "UAD";         // "UAD" = all on-site fields, "UPD" = only fields with a formal UPD↔UAD mapping
+const collapsed = new Set();
+
+/* ===== conditionality engine ===== */
+function asBool(v){ if(v===true||v===false) return v; const s=String(v).toLowerCase(); if(["true","yes","y"].includes(s))return true; if(["false","no","n"].includes(s))return false; return null; }
+function hasVal(n){ const v=V[n]; return v!==undefined && v!==null && v!==""; }
+function isValid(n){
+  const f=FIELDS[n]; const v=V[n];
+  if(!hasVal(n)) return false;
+  if(f.itype==="enum") return f.enums.some(e=>e.v===v);
+  if(f.itype==="bool") return v===true||v===false;
+  if(["int","num","year"].includes(f.itype)) return typeof v==="number" && !isNaN(v);
+  if(f.itype==="date") return /^\d{4}-\d{2}-\d{2}$/.test(String(v));
+  return String(v).trim().length>0;
+}
+function evalPred(p){
+  const cur=V[p.f];
+  if(p.op==="has")    return hasVal(p.f);
+  if(p.op==="nothas") return !hasVal(p.f);
+  // eq / ne — handle boolean-ish gate values
+  const gb=asBool(p.v);
+  if(gb!==null){ const cb=asBool(cur); const eq=(cb===gb); return p.op==="ne"? (hasVal(p.f)&&!eq) : eq; }
+  if(p.op==="ne") return hasVal(p.f) && String(cur)!==String(p.v);
+  return String(cur)===String(p.v);
+}
+function evalGate(g){ if(!g) return true; return g.groups.some(grp=>grp.every(evalPred)); }
+function isActive(n){ const f=FIELDS[n]; if(!f.gate) return true; return evalGate(f.gate); }
+function gateText(g){
+  if(!g) return "";
+  return g.groups.map(grp=>grp.map(p=>{
+    const v = p.op==="has"?"(any value)": p.op==="nothas"?"(empty)": '"'+p.v+'"';
+    const op = p.op==="eq"?"=":p.op==="ne"?"≠":p.op==="has"?"is set":"is empty";
+    return p.f+" "+op+(p.op==="has"||p.op==="nothas"?"":" "+v);
+  }).join("  AND  ")).join("   — OR —   ");
+}
+
+/* ===== seeding ===== */
+function seedValueFor(n){
+  const f=FIELDS[n];
+  if(f.itype==="enum"){ const ok=f.enums.find(e=>e.v!=="Other" && !/Does Not Display/.test(e.disp||"")); return (ok||f.enums[0]||{}).v; }
+  if(f.itype==="bool") return true;
+  if(f.itype==="int")  return 2;
+  if(f.itype==="num")  return 120;
+  if(f.itype==="year") return 2005;
+  if(f.itype==="date") return "2026-05-15";
+  return "Sample "+f.name.replace(/Type$|Description$|Name$|Identifier$/,"")||"Sample";
+}
+function fieldsIn(page,section){ return NAMES.filter(n=>FIELDS[n].page===page && (section==null||FIELDS[n].section===section)); }
+function seedScope(page,section){
+  const scope=fieldsIn(page,section);
+  for(let i=0;i<6;i++){ let changed=false;
+    scope.forEach(n=>{ if(isActive(n) && !hasVal(n)){ V[n]=seedValueFor(n); changed=true; } });
+    if(!changed) break;
+  }
+  render();
+}
+function clearScope(page,section){ fieldsIn(page,section).forEach(n=>{ delete V[n]; }); render(); }
+
+/* ===== input rendering ===== */
+function inputHTML(n){
+  const f=FIELDS[n]; const v=V[n];
+  if(f.itype==="enum"){
+    const opts=['<option value="">—</option>'].concat(f.enums.map(e=>`<option value="${esc(e.v)}" ${v===e.v?"selected":""}>${esc(e.disp&&e.disp!=="<<Does Not Display>>"?e.disp:e.v)}</option>`));
+    return `<select class="inp sel-inp" data-fin="${esc(n)}">${opts.join("")}</select>`;
+  }
+  if(f.itype==="bool"){
+    return `<div class="seg sm" data-finseg="${esc(n)}">
+      <button data-v="" class="${v==null||v===""?"on":""}">—</button>
+      <button data-v="true" class="${asBool(v)===true?"on":""}">Yes</button>
+      <button data-v="false" class="${asBool(v)===false?"on":""}">No</button></div>`;
+  }
+  const t = f.itype==="date"?"date":(["int","num","year"].includes(f.itype)?"number":"text");
+  return `<input class="inp" type="${t}" data-fin="${esc(n)}" value="${v==null?"":esc(v)}" placeholder="${f.itype}">`;
+}
+
+/* ===== left panel ===== */
+function topGates(k){ return NAMES.filter(n=>FIELDS[n].gates.length).sort((a,b)=>FIELDS[b].gates.length-FIELDS[a].gates.length).slice(0,k); }
+function buildLeft(){
+  const el=document.getElementById("left");
+  const updCount=NAMES.filter(n=>FIELDS[n].upd.length).length;
+  let h="";
+  h+=`<div class="lh">Field set</div><div class="seg" id="specSeg" style="margin-bottom:14px">
+    <button data-spec="UAD" class="${specMode==="UAD"?"on":""}" title="All ${NAMES.length} on-site UAD 3.6 fields">UAD 3.6 · ${NAMES.length}</button>
+    <button data-spec="UPD" class="${specMode==="UPD"?"on":""}" title="Only the ${updCount} fields with a formal UPD↔UAD mapping">UPD · ${updCount}</button>
+  </div>`;
+  h+=`<div class="lh">Scenario actions</div><div class="actions">
+    <button class="act-btn" id="seedAll"><span class="ic">🌱</span> Seed all active fields</button>
+    <button class="act-btn" id="clearAll"><span class="ic">🧹</span> Clear everything</button>
+    <button class="act-btn toggle ${showGated?"":"on"}" id="tHide"><span class="ic">👁</span> ${showGated?"Hide gated-out fields":"Show gated-out fields"}</button>
+    <button class="act-btn toggle ${highlightGating?"on":""}" id="tGate"><span class="ic">⚡</span> Highlight gating fields</button>
+  </div>`;
+
+  const tg=topGates(12);
+  h+=`<div class="lh">Key gates <span class="ct">${tg.length}</span></div>`;
+  tg.forEach(n=>{ h+=ctlHTML(n); });
+
+  if(DATA.missingGateFields.length){
+    h+=`<div class="lh">External / desk gates <span class="ct">${DATA.missingGateFields.length}</span></div>
+        <div class="muted" style="font-size:10.5px;margin-bottom:7px">Referenced by conditionality but captured off-site. Toggle to trigger dependent on-site fields.</div>`;
+    DATA.missingGateFields.forEach(n=>{ h+=extCtlHTML(n); });
+  }
+  el.innerHTML=h;
+  wireLeft();
+}
+function ctlHTML(n){
+  const f=FIELDS[n];
+  return `<div class="kdf"><label data-jump="${esc(n)}" style="cursor:pointer">${esc(n)} <span class="gn">⚡${f.gates.length}</span></label>${inputHTML(n)}</div>`;
+}
+function extCtlHTML(n){
+  const v=V[n];
+  return `<div class="kdf"><label>${esc(n)}</label><div class="seg sm" data-finseg="${esc(n)}">
+    <button data-v="" class="${v==null||v===""?"on":""}">—</button>
+    <button data-v="true" class="${asBool(v)===true?"on":""}">Yes</button>
+    <button data-v="false" class="${asBool(v)===false?"on":""}">No</button></div></div>`;
+}
+function wireLeft(){
+  const el=document.getElementById("left");
+  el.querySelectorAll("#specSeg button").forEach(b=>b.onclick=()=>{ if(specMode!==b.dataset.spec){ specMode=b.dataset.spec; render(); } });
+  el.querySelector("#seedAll").onclick=()=>{ PAGES.forEach(p=>{}); for(let i=0;i<8;i++){let ch=false; NAMES.forEach(n=>{if(isActive(n)&&!hasVal(n)){V[n]=seedValueFor(n);ch=true;}}); if(!ch)break;} render(); };
+  el.querySelector("#clearAll").onclick=()=>{ NAMES.forEach(n=>delete V[n]); render(); };
+  el.querySelector("#tHide").onclick=()=>{ showGated=!showGated; render(); };
+  el.querySelector("#tGate").onclick=()=>{ highlightGating=!highlightGating; render(); };
+  bindInputs(el);
+  el.querySelectorAll("[data-jump]").forEach(l=>l.onclick=()=>openDetail(l.dataset.jump));
+}
+
+/* ===== inputs binding (shared) ===== */
+function bindInputs(root){
+  root.querySelectorAll("[data-fin]").forEach(inp=>{
+    inp.onchange=()=>{ const n=inp.dataset.fin; const val=inp.value; V[n]= val===""?undefined:(FIELDS[n].itype==="num"||FIELDS[n].itype==="int"||FIELDS[n].itype==="year"? Number(val): val); render(); };
+  });
+  root.querySelectorAll("[data-finseg]").forEach(seg=>seg.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    const n=seg.dataset.finseg; const d=b.dataset.v; V[n]= d===""?undefined:(d==="true"); render();
+  }));
+}
+
+/* ===== tree ===== */
+function matchQuery(n){
+  if(!query) return true;
+  const f=FIELDS[n];
+  return (n+" "+(f.uid||"")+" "+(f.xpath||"")).toLowerCase().includes(query);
+}
+const inSpec=n=>specMode==="UAD" || FIELDS[n].upd.length>0;
+function buildTree(){
+  const main=document.getElementById("main");
+  const SN=NAMES.filter(inSpec);
+  let total=SN.length, active=0, filled=0;
+  SN.forEach(n=>{ if(isActive(n))active++; if(hasVal(n))filled++; });
+  document.getElementById("sTotal").textContent=total;
+  document.getElementById("sActive").textContent=active;
+  document.getElementById("sFilled").textContent=filled;
+  document.getElementById("sHidden").textContent=total-active;
+
+  let shown=0;
+  let h="";
+  PAGES.forEach(page=>{
+    const pf=SN.filter(n=>FIELDS[n].page===page);
+    if(!pf.length) return;
+    const pAct=pf.filter(isActive).length;
+    // build sections first so we can skip an empty page bar when search filters all out
+    let sh="";
+    const secs=[]; pf.forEach(n=>{ const s=FIELDS[n].section; if(!secs.includes(s))secs.push(s); });
+    secs.forEach(sec=>{
+      const sf=pf.filter(n=>FIELDS[n].section===sec);
+      const visf=sf.filter(n=>(isActive(n)||showGated) && matchQuery(n));
+      if(!visf.length) return;
+      shown+=visf.length;
+      const sid=page+"||"+sec; const isC=collapsed.has(sid);
+      const sAct=sf.filter(isActive).length;
+      const reqActive=sf.filter(n=>isActive(n) && (FIELDS[n].cond==="R"||FIELDS[n].cond==="CR"));
+      const complete = reqActive.length>0 && reqActive.every(isValid);
+      sh+=`<div class="section${complete?" complete":""}"><div class="sec-head" data-tw="${esc(sid)}">
+        <span class="tw">${isC?"▶":"▼"}</span><h3>${esc(sec)}</h3><span class="sc">${sAct}/${sf.length}</span>
+        <span class="seed" data-seeds="${esc(sid)}">🌱 seed</span></div>`;
+      if(!isC){ sh+=`<div class="sec-body">`+visf.map(fieldRow).join("")+`</div>`; }
+      sh+=`</div>`;
+    });
+    if(!sh) return;
+    h+=`<div class="pagebar"><h2>${esc(page)}</h2><span class="pc">${pAct}/${pf.length} active</span>
+      <span class="mini"><button data-seedp="${esc(page)}">🌱 seed page</button><button data-clearp="${esc(page)}">clear</button></span></div>`+sh;
+  });
+  if(query && !h) h=`<div class="muted" style="padding:30px 6px;text-align:center">No fields match “${esc(query)}”.</div>`;
+  main.innerHTML=h;
+  const sc=document.getElementById("searchCount");
+  if(sc) sc.textContent = query? shown+" match"+(shown===1?"":"es") : "";
+  wireTree();
+}
+function fieldRow(n){
+  const f=FIELDS[n]; const act=isActive(n); const fl=hasVal(n);
+  const gateChip = f.gates.length? `<span class="gates-chip" data-gatefocus="${esc(n)}" title="Spotlight the ${f.gates.length} field(s) this controls">⚡ gates ${f.gates.length}</span>`:"";
+  const sp=SPAWN[n]; const spawnChip = sp? `<span class="spawn-chip" title="Toggling Yes adds ${esc(sp.e)}">＋ ${sp.n}</span>`:"";
+  const valid = act && isValid(n);
+  const badgeCls=`cbadge ${valid?'c-ok':'c-'+esc(f.cond||'?')}`;
+  const cb=f.gate? `<span class="${badgeCls}" data-gatedfocus="${esc(n)}" title="Spotlight the ${gateFieldsOf(f.gate).length} field(s) that control this one">${esc(f.cond||'?')}</span>`
+                 : `<span class="${badgeCls}">${esc(f.cond||'?')}</span>`;
+  const updTag=(specMode==="UPD" && f.upd.length)? `<span class="upd-tag" title="UPD sort ID">${f.upd.map(u=>esc(u.sort)).join(" · ")}</span>`:"";
+  const cls=["f", act?"":"gated", n===selected?"sel":"", (highlightGating&&f.gates.length)?"":""].join(" ");
+  const ring = (highlightGating&&f.gates.length)? "box-shadow:inset 3px 0 0 var(--amber);":"";
+  let right;
+  if(act){ right=`<span class="finput${f.itype==='enum'?' full':''}">${fl?'<span class="filled-dot"></span>':''}${inputHTML(n)}</span>`; }
+  else   { right=`<span class="needs" title="${esc(gateText(f.gate))}">needs: ${esc(gateText(f.gate))}</span>`; }
+  return `<div class="${cls}" style="${ring}" data-row="${esc(n)}">
+    <span class="dot ${act?"on":"off"}"></span>
+    <span class="fname" data-jump="${esc(n)}" title="${esc(n)}">${esc(n)}</span>
+    ${cb}${updTag}${spawnChip}${gateChip}${right}</div>`;
+}
+function wireTree(){
+  const main=document.getElementById("main");
+  main.querySelectorAll("[data-tw]").forEach(t=>t.onclick=e=>{ if(e.target.closest("[data-seeds]"))return; const k=t.dataset.tw; collapsed.has(k)?collapsed.delete(k):collapsed.add(k); buildTree(); });
+  main.querySelectorAll("[data-seeds]").forEach(b=>b.onclick=e=>{e.stopPropagation(); const [p,s]=b.dataset.seeds.split("||"); seedScope(p,s);});
+  main.querySelectorAll("[data-seedp]").forEach(b=>b.onclick=()=>seedScope(b.dataset.seedp,null));
+  main.querySelectorAll("[data-clearp]").forEach(b=>b.onclick=()=>clearScope(b.dataset.clearp,null));
+  main.querySelectorAll("[data-jump]").forEach(l=>l.onclick=e=>{e.stopPropagation(); openDetail(l.dataset.jump);});
+  // ⚡ gates chip → spotlight the gating field + everything it controls
+  main.querySelectorAll("[data-gatefocus]").forEach(c=>c.onclick=e=>{e.stopPropagation(); const n=c.dataset.gatefocus; openDetail(n); enterGateFocus(n);});
+  // CR/R badge on a gated field → reverse spotlight: the gate field(s) that control it
+  main.querySelectorAll("[data-gatedfocus]").forEach(c=>c.onclick=e=>{e.stopPropagation(); const n=c.dataset.gatedfocus; openDetail(n); enterGatedFocus(n);});
+  // click anywhere on a row (outside its controls/chips) selects it
+  main.querySelectorAll(".f[data-row]").forEach(row=>row.onclick=e=>{
+    if(e.target.closest("input,select,.seg,[data-finseg],.finput,.gates-chip,.spawn-chip,[data-jump]")) return;
+    openDetail(row.dataset.row);
+  });
+  bindInputs(main);
+}
+
+/* ===== gate-focus spotlight modes =====
+   Unified color scheme in both modes:
+   gated row  — blue ring  = its gate condition is currently satisfied, orange = not
+   gate row   — green ring = it is currently satisfying the relevant condition(s), red = not */
+const FOCUS_CLASSES=["gate-lift","gate-source","gated-on","gated-off","gate-on","gate-off"];
+const cssEsc=x=>(window.CSS&&CSS.escape?CSS.escape(x):x);
+function exitGateFocus(){
+  document.body.classList.remove("gate-focus");
+  document.querySelectorAll(".gate-lift,.gate-source").forEach(r=>r.classList.remove(...FOCUS_CLASSES));
+}
+/* predicates inside `gate` that reference field gname */
+function gatePredsFor(gate,gname){
+  const out=[]; if(!gate) return out;
+  gate.groups.forEach(grp=>grp.forEach(p=>{ if(p.f===gname) out.push(p); }));
+  return out;
+}
+/* every field referenced by `gate`'s predicates — unlike f.gatedBy this includes external/desk gates */
+function gateFieldsOf(gate){
+  const s=new Set(); if(!gate) return [];
+  gate.groups.forEach(grp=>grp.forEach(p=>s.add(p.f)));
+  return [...s];
+}
+function enterFocusMode(){
+  document.body.classList.add("gate-focus");
+  // any click (or Esc) restores normal — defer so the originating chip click doesn't immediately close it
+  setTimeout(()=>document.addEventListener("click",exitGateFocus,{capture:true,once:true}),0);
+}
+/* ⚡ mode: n is a gate — spotlight it + every field it controls */
+function enterGateFocus(n){
+  exitGateFocus();
+  const f=FIELDS[n]; if(!f||!f.gates.length) return;
+  const main=document.getElementById("main");
+  const sel=x=>main.querySelector('.f[data-row="'+cssEsc(x)+'"]');
+  // the gate is "satisfying" if ≥1 predicate referencing it across its dependents' gates evaluates true
+  const satisfying=f.gates.some(d=>gatePredsFor(FIELDS[d]&&FIELDS[d].gate,n).some(evalPred));
+  const src=sel(n); if(src) src.classList.add("gate-source", satisfying?"gate-on":"gate-off");
+  f.gates.forEach(g=>{ const r=sel(g); if(r) r.classList.add("gate-lift", isActive(g)?"gated-on":"gated-off"); });
+  enterFocusMode();
+}
+/* CR mode: n is gated — spotlight it + the gate field(s) that control it */
+function enterGatedFocus(n){
+  exitGateFocus();
+  const f=FIELDS[n]; if(!f||!f.gate) return;
+  const main=document.getElementById("main");
+  const sel=x=>main.querySelector('.f[data-row="'+cssEsc(x)+'"]');
+  const src=sel(n); if(src) src.classList.add("gate-source", isActive(n)?"gated-on":"gated-off");
+  gateFieldsOf(f.gate).forEach(g=>{
+    const ok=gatePredsFor(f.gate,g).some(evalPred);
+    const r=sel(g);
+    if(r){ r.classList.add("gate-lift", ok?"gate-on":"gate-off"); return; }
+    // external/desk gate (or filtered-out row) — highlight its left-sidebar control instead
+    const ctl=document.querySelector('aside.left .kdf [data-fin="'+cssEsc(g)+'"],aside.left .kdf [data-finseg="'+cssEsc(g)+'"]');
+    const kdf=ctl&&ctl.closest(".kdf"); if(kdf) kdf.classList.add("gate-lift", ok?"gate-on":"gate-off");
+  });
+  enterFocusMode();
+}
+
+/* ===== right detail panel ===== */
+const esc=s=>(s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const sevColor={Fatal:"var(--red)",Severe:"var(--orange)",Warning:"var(--amber)",Info:"var(--grey)"};
+function blk(t,inner){ return inner?`<div class="blk"><div class="blk-h">${t}</div>${inner}</div>`:""; }
+function kv(k,v){ return v?`<div class="kv"><span class="k">${k}</span><span class="v">${v}</span></div>`:""; }
+function defaultDetail(){
+  const gaters=NAMES.filter(n=>FIELDS[n].gates.length).length;
+  document.getElementById("right").innerHTML=`
+   <div class="dh"><div class="kick">Workbench</div><h2>How to use this</h2></div>
+   <div class="dbody">
+    <ul class="help">
+      <li><b>Every field is live.</b> ${NAMES.length} on-site UAD 3.6 fields, grouped into the inspection app's pages &amp; sections. Desktop-only comparable / sales / valuation fields are excluded.</li>
+      <li><b>Fill any field</b> using its inline control. Setting a value can satisfy another field's conditionality and make it appear — that's the whole point.</li>
+      <li><b>Gated-out fields are darkened</b> with a <span class="muted">needs: …</span> note showing exactly what would reveal them. Use <span class="kbd">Hide gated-out fields</span> to remove them entirely.</li>
+      <li><b><span style="color:var(--amber)">⚡ gates N</span></b> marks a field that controls others (${gaters} of them do). Click it to spotlight its dependents: <span style="color:var(--blue)">blue</span> = dependent's condition satisfied, <span style="color:var(--orange)">orange</span> = not; the gate itself reads <span style="color:var(--green)">green</span> when it's satisfying a condition, <span style="color:var(--red)">red</span> when not. Toggle <span class="kbd">Highlight gating fields</span> for an amber rail on all of them.</li>
+      <li><b>Click a gated field's <span class="cbadge c-CR">CR</span> badge</b> for the reverse spotlight — it lifts the gate field(s) that control it, with the same colors. Gates captured off-site light up in the left sidebar instead.</li>
+      <li><b>Field set</b> (left sidebar, top) switches between all on-site <b>UAD 3.6</b> fields and the <b>UPD</b> subset — only fields with a formal UPD↔UAD mapping, each tagged with its <span style="color:var(--purple)">UPD sort ID</span>.</li>
+      <li><b>🌱 Seed</b> fills a section, a page, or everything with valid placeholder values (cascading into fields it reveals).</li>
+      <li><b>Click any field name</b> to see its full spec here: MISMO UID, xPath, definition, conditionality rule (live-evaluated), enum values, compliance rules, and UPD mapping.</li>
+    </ul>
+    <div class="blk"><div class="blk-h">Legend</div>
+      <div class="legend2">
+        <div class="legi"><span class="sw" style="background:var(--green)"></span>active / visible</div>
+        <div class="legi"><span class="sw" style="background:#3a4252"></span>gated out</div>
+        <div class="legi"><span class="sw" style="background:var(--red)"></span>R — always required</div>
+        <div class="legi"><span class="sw" style="background:var(--amber)"></span>CR — conditional</div>
+        <div class="legi"><span class="sw" style="background:#3a4252"></span>O — optional</div>
+        <div class="legi"><span class="sw" style="background:var(--blue)"></span>filled value</div>
+      </div></div>
+    <div class="blk"><div class="blk-h">Spotlight colors</div>
+      <div class="legend2">
+        <div class="legi"><span class="sw" style="background:var(--blue)"></span>gated · condition satisfied</div>
+        <div class="legi"><span class="sw" style="background:var(--orange)"></span>gated · not satisfied</div>
+        <div class="legi"><span class="sw" style="background:var(--green)"></span>gate · satisfying</div>
+        <div class="legi"><span class="sw" style="background:var(--red)"></span>gate · not satisfying</div>
+      </div></div>
+   </div>`;
+}
+function openDetail(n){
+  selected=n; const f=FIELDS[n]; if(!f){ return; }
+  const act=isActive(n);
+  let h=`<div class="dh"><div class="kick">FIELD · ${esc(f.page.replace(/^\d+\s·\s/,""))} ▸ ${esc(f.section)}</div><h2>${esc(n)}</h2></div><div class="dbody">`;
+
+  /* live status + value */
+  let st=kv("Status", act?`<span class="ev t">active</span>`:`<span class="ev f">gated out</span>`);
+  st+=kv("Conditionality",`<span class="cond c-${esc(f.cond||'?')}">${esc(f.cond||'?')}</span>`);
+  st+=`<div class="kv"><span class="k">Value</span><span class="v" id="dval">${inputHTML(n)}</span></div>`;
+  if(SPAWN[n]) st+=kv("Spawns", `<span class="spawn-chip">＋ ${SPAWN[n].n}</span> &nbsp;Yes ⇒ add ${esc(SPAWN[n].e)} — a ${SPAWN[n].n==="children"?"repeating collection (0:N)":"single child (0:1)"} sub-entity.`);
+  h+=blk("This field now", st);
+
+  /* gate logic (live) */
+  if(f.gate){
+    let gi=f.gate.groups.map((grp,i)=>{
+      const inner=grp.map(p=>{
+        const ok=evalPred(p);
+        const opd=p.op==="eq"?"=":p.op==="ne"?"≠":p.op==="has"?"is set":"is empty";
+        const vv=(p.op==="has"||p.op==="nothas")?"":' "'+esc(p.v)+'"';
+        return `<div class="pred" data-jump="${esc(p.f)}"><span class="ev ${ok?'t':'f'}">${ok?'✓':'✗'}</span><code>${esc(p.f)}</code> ${opd}${vv}</div>`;
+      }).join("");
+      return `<div class="grp">${inner}</div>`+(i<f.gate.groups.length-1?`<div class="or">— OR —</div>`:"");
+    }).join("");
+    h+=blk(`Reveals when ${act?'<span class="ev t">satisfied</span>':'<span class="ev f">not satisfied</span>'}`, gi);
+  } else {
+    h+=blk("Conditionality", `<div class="def muted">Unconditional (${esc(f.cond||'?')}) — shown whenever its parent entity is present.</div>`);
+  }
+  if(f.condd) h+=blk("Conditionality (spec text)", `<div class="def">${esc(f.condd)}</div>`);
+
+  /* gates these */
+  if(f.gates.length){
+    const colorize = isActive(n) && hasVal(n);
+    h+=blk(`Gates these fields <span class="ct">${f.gates.length}</span>`+(colorize?` <span class="muted" style="font-weight:400;text-transform:none;letter-spacing:0">· <span style="color:var(--green)">green=visible</span> / <span style="color:var(--red)">red=hidden</span></span>`:""), f.gates.map(g=>{
+      const cls = colorize? (isActive(g)?"pill on":"pill off") : "pill";
+      return `<span class="${cls}" data-jump="${esc(g)}">${esc(g)}</span>`;
+    }).join(" "));
+  }
+  if(f.gatedBy.length){
+    h+=blk("Gated by", f.gatedBy.map(g=>`<span class="pill" data-jump="${esc(g)}">${esc(g)}</span>`).join(" "));
+  }
+
+  /* MISMO */
+  let mi=kv("UAD UID",`<code>${esc(f.uid)}</code>`)+kv("Parent",`<code>${esc(f.parent)}</code>`)
+    +kv("Type", f.attr?"Attribute":"Data point")+kv("Format",[f.fmt,f.fmtd].filter(Boolean).map(esc).join(" · "))
+    +kv("Cardinality",esc(f.card))+kv("Report loc",esc(f.rl));
+  h+=blk("MISMO / UAD 3.6", mi);
+  if(f.def) h+=blk("Definition",`<div class="def">${esc(f.def)}</div>`);
+  if(f.impl) h+=blk("Implementation note",`<div class="def">${esc(f.impl)}</div>`);
+  if(f.xpath) h+=blk("xPath",`<code class="xp">${esc(f.xpath)}</code>`);
+
+  if(f.enums.length){
+    h+=blk(`Allowed values <span class="ct">${f.enums.length}</span>`, f.enums.map(e=>`<div class="enum"><code>${esc(e.v)}</code>${e.disp&&e.disp!==e.v&&e.disp!=="<<Does Not Display>>"?`<span class="edisp">${esc(e.disp)}</span>`:""}${e.d?`<div class="ed">${esc(e.d)}</div>`:""}</div>`).join(""));
+  }
+  if(f.rules.length){
+    h+=blk(`Compliance rules <span class="ct">${f.rules.length}</span>`, f.rules.map(r=>`<div class="rule" style="border-left-color:${sevColor[r.sev]||'var(--grey)'}"><div class="rule-h"><code>${esc(r.id)}</code><span class="sev" style="background:${sevColor[r.sev]||'var(--grey)'}">${esc(r.sev)}</span></div>${r.msg?`<div class="rule-msg">${esc(r.msg)}</div>`:""}${r.logic?`<div class="rule-lg">${esc(r.logic)}</div>`:""}</div>`).join(""));
+  }
+  if(f.upd.length){
+    h+=blk(`UPD mapping <span class="ct">${f.upd.length}</span>`, f.upd.map(u=>`<div class="upd"><div class="upd-h"><code>${esc(u.sort)}</code> <span class="upd-f">${esc(u.field)}</span> <span class="pill">${esc(u.cond)}</span></div>${u.notes?`<div class="upd-n">${esc(u.notes)}</div>`:""}</div>`).join(""));
+  } else {
+    h+=blk("UPD mapping", `<div class="def muted">No formal UPD↔UAD mapping — UAD-only.</div>`);
+  }
+  h+=`</div>`;
+  document.getElementById("right").innerHTML=h;
+  const r=document.getElementById("right");
+  bindInputs(r);
+  r.querySelectorAll("[data-jump]").forEach(l=>l.onclick=()=>{ openDetail(l.dataset.jump); scrollToField(l.dataset.jump); });
+  buildTree(); // refresh selection highlight
+}
+
+/* center the main tree on a field (expand its section, scroll into view) */
+function scrollToField(n){
+  const f=FIELDS[n]; if(!f) return;
+  const sid=f.page+"||"+f.section;
+  if(collapsed.has(sid)){ collapsed.delete(sid); buildTree(); }
+  const row=document.querySelector('#main .f[data-row="'+(window.CSS&&CSS.escape?CSS.escape(n):n)+'"]');
+  if(row) row.scrollIntoView({block:"center",behavior:"smooth"});
+}
+
+/* ===== modal shell (shared by Export + Validate) ===== */
+let modalOpen=false;
+function closeModal(){ const m=document.getElementById("modal"); m.classList.remove("on"); m.setAttribute("aria-hidden","true"); m.innerHTML=""; modalOpen=false; }
+function openModal(title, bodyHTML, actions){
+  const m=document.getElementById("modal");
+  const af=(actions||[]).map((a,i)=>`<button class="mbtn ${a.primary?'primary':''}" data-act="${i}">${esc(a.label)}</button>`).join("");
+  m.innerHTML=`<div class="modal-card">
+    <div class="modal-head"><h2>${esc(title)}</h2><button class="mclose" title="Close">✕</button></div>
+    <div class="modal-body">${bodyHTML}</div>
+    <div class="modal-foot"><div class="spacer"></div>${af}<button class="mbtn" data-close>Close</button></div>
+  </div>`;
+  m.classList.add("on"); m.setAttribute("aria-hidden","false"); modalOpen=true;
+  m.querySelector(".mclose").onclick=closeModal;
+  m.querySelector("[data-close]").onclick=closeModal;
+  m.onclick=e=>{ if(e.target===m) closeModal(); };          // backdrop click
+  (actions||[]).forEach((a,i)=>{ const b=m.querySelector(`[data-act="${i}"]`); if(b) b.onclick=()=>a.onClick(m); });
+  return m;
+}
+
+/* ===== export: MISMO-XML / JSON-in-XML-shape ===== */
+const ATTR="@_attr", TEXT="@_text";   // reserved keys on a tree node
+function buildExportTree(){
+  const root={};
+  NAMES.filter(hasVal).forEach(n=>{
+    const f=FIELDS[n]; if(!f.xpath) return;
+    const segs=f.xpath.split("/").filter(Boolean);
+    let node=root;
+    segs.forEach(seg=>{ node[seg]=node[seg]||{}; node=node[seg]; });   // walk to the leaf container
+    const val=V[n];
+    if(f.attr){ (node[ATTR]=node[ATTR]||{})[n]=val; }
+    else { node[n]=node[n]||{}; node[n][TEXT]=val; }
+  });
+  return root;
+}
+function toXML(node, name, depth){
+  const pad="  ".repeat(depth);
+  const attrs=node[ATTR]||{};
+  const attrStr=Object.keys(attrs).map(k=>` ${k}="${esc(String(attrs[k]))}"`).join("");
+  const childKeys=Object.keys(node).filter(k=>k!==ATTR && k!==TEXT);
+  if(TEXT in node && !childKeys.length){
+    return `${pad}<${name}${attrStr}>${esc(String(node[TEXT]))}</${name}>`;
+  }
+  if(!childKeys.length && !(TEXT in node)){
+    return `${pad}<${name}${attrStr}/>`;
+  }
+  const inner=childKeys.map(k=>toXML(node[k],k,depth+1)).join("\n");
+  return `${pad}<${name}${attrStr}>\n${inner}\n${pad}</${name}>`;
+}
+function exportXML(){
+  const tree=buildExportTree();
+  const keys=Object.keys(tree).filter(k=>k!==ATTR && k!==TEXT);
+  if(!keys.length) return "<!-- No filled fields to export -->";
+  return `<?xml version="1.0" encoding="UTF-8"?>\n`+keys.map(k=>toXML(tree[k],k,0)).join("\n");
+}
+function jsonShape(node){
+  const out={};
+  const attrs=node[ATTR]||{};
+  Object.keys(attrs).forEach(k=>{ out["@"+k]=attrs[k]; });
+  if(TEXT in node) out["#text"]=node[TEXT];
+  Object.keys(node).filter(k=>k!==ATTR&&k!==TEXT).forEach(k=>{ out[k]=jsonShape(node[k]); });
+  return out;
+}
+function exportJSON(){ return JSON.stringify(jsonShape(buildExportTree()), null, 2); }
+function download(filename, text, mime){
+  const blob=new Blob([text],{type:mime}); const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download=filename; document.body.appendChild(a); a.click();
+  a.remove(); setTimeout(()=>URL.revokeObjectURL(url),0);
+}
+function openExport(){
+  const filledN=NAMES.filter(hasVal).length;
+  let fmt="xml";
+  const render=()=>{ const c=document.getElementById("exportCode"); if(c) c.textContent = fmt==="xml"?exportXML():exportJSON(); };
+  const body=`
+    <div class="seg sm" id="exportSeg" style="max-width:220px;margin-bottom:11px">
+      <button data-fmt="xml" class="on">MISMO XML</button>
+      <button data-fmt="json">JSON (XML shape)</button>
+    </div>
+    <pre class="codebox" id="exportCode"></pre>
+    <div class="mnote">${filledN} filled field${filledN===1?"":"s"} projected by xPath. Structural projection only — single subject instance, no MISMO namespaces / SequenceNumbers / repeating-container instancing.</div>`;
+  const m=openModal("Export dataset", body, [
+    {label:"Copy", onClick:()=>{ navigator.clipboard&&navigator.clipboard.writeText(document.getElementById("exportCode").textContent); }},
+    {label:"Download", primary:true, onClick:()=> fmt==="xml"
+        ? download("inspection-dataset.xml", exportXML(), "application/xml")
+        : download("inspection-dataset.json", exportJSON(), "application/json") },
+  ]);
+  m.querySelectorAll("#exportSeg button").forEach(b=>b.onclick=()=>{
+    fmt=b.dataset.fmt; m.querySelectorAll("#exportSeg button").forEach(x=>x.classList.toggle("on",x===b)); render();
+  });
+  render();
+}
+
+/* ===== validate: surface the spec's real compliance messages ===== */
+const PRESENCE=/not provided|is required|not been provided|provide the/i;
+const SEVRANK={Fatal:0,Severe:1,Warning:2,Info:3};
+function presenceRule(f){
+  const r=(f.rules||[]).filter(x=>x.logic && PRESENCE.test(x.logic+" "+(x.msg||"")));
+  r.sort((a,b)=>(SEVRANK[a.sev]??9)-(SEVRANK[b.sev]??9));
+  return r[0]||null;
+}
+function runValidation(){
+  const errs=[];
+  NAMES.forEach(n=>{
+    const f=FIELDS[n];
+    if(!isActive(n)) return;
+    if(f.cond!=="R" && f.cond!=="CR") return;     // all active R + CR (mirrors section-complete logic)
+    if(isValid(n)) return;
+    let id="", sev="Fatal", msg="";
+    if(!hasVal(n)){
+      const pr=presenceRule(f);
+      if(pr){ id=pr.id; sev=pr.sev; msg=pr.msg||("Provide a value for "+n+"."); }
+      else { msg="Provide a value for "+n+"."; }
+    } else {
+      sev="Severe";
+      msg = f.itype==="enum" ? ("Value is not in the allowed set for "+n+".")
+          : ("Value is not a valid "+f.itype+" for "+n+".");
+    }
+    errs.push({n, page:f.page, section:f.section, cond:f.cond, id, sev, msg});
+  });
+  return errs;
+}
+function openValidate(){
+  const errs=runValidation();
+  let body;
+  if(!errs.length){
+    body=`<div class="vok"><span class="big">✓</span>No validation errors.<div class="muted" style="font-weight:400;font-size:12px;margin-top:6px">Every active required (R) and conditionally-required (CR) field has a valid value.</div></div>`;
+  } else {
+    const groups={};
+    errs.forEach(e=>{ const k=e.page+" ▸ "+e.section; (groups[k]=groups[k]||[]).push(e); });
+    const secCount=Object.keys(groups).length;
+    body=`<div class="muted" style="margin-bottom:12px"><b style="color:var(--txt)">${errs.length}</b> issue${errs.length===1?"":"s"} across <b style="color:var(--txt)">${secCount}</b> section${secCount===1?"":"s"} (active R + CR fields without a valid value).</div>`;
+    body+=Object.keys(groups).map(k=>`<div class="vgrp"><div class="vgrp-h">${esc(k)}</div>`+
+      groups[k].map(e=>`<div class="verr" style="border-left-color:${sevColor[e.sev]||'var(--grey)'}" data-vjump="${esc(e.n)}">
+        <span class="cbadge c-${esc(e.cond||'?')}">${esc(e.cond||'?')}</span>
+        <div style="flex:1">
+          <span class="vname">${esc(e.n)}</span>
+          <div class="vmsg">${esc(e.msg)}</div>
+          <div class="vmeta">${e.id?`<code style="font-size:10px;color:var(--muted)">${esc(e.id)}</code>`:""}<span class="sev" style="background:${sevColor[e.sev]||'var(--grey)'}">${esc(e.sev)}</span></div>
+        </div></div>`).join("")+`</div>`).join("");
+    body+=`<div class="mnote">Messages are the spec's own Fatal/Warning text for presence rules. Free-text <code>logic</code> rules that reference desk-only or cross-field context are not evaluated here.</div>`;
+  }
+  const m=openModal("Validation", body, []);
+  m.querySelectorAll("[data-vjump]").forEach(el=>el.onclick=()=>{ const n=el.dataset.vjump; closeModal(); openDetail(n); scrollToField(n); });
+}
+
+/* ===== header tools wiring ===== */
+function wireHeader(){
+  const s=document.getElementById("search"), wrap=document.getElementById("searchWrap");
+  s.oninput=()=>{ query=s.value.trim().toLowerCase(); wrap.classList.toggle("has",!!s.value); buildTree(); };
+  document.getElementById("searchClear").onclick=()=>{ s.value=""; query=""; wrap.classList.remove("has"); buildTree(); s.focus(); };
+  document.getElementById("btnExport").onclick=openExport;
+  document.getElementById("btnValidate").onclick=openValidate;
+}
+
+/* ===== render orchestrator ===== */
+function render(){ buildLeft(); if(selected && FIELDS[selected]) openDetail(selected); else buildTree(); }
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    if(modalOpen){ closeModal(); return; }
+    if(document.body.classList.contains("gate-focus")){ exitGateFocus(); return; }
+    selected=null; defaultDetail(); buildTree();
+  }
+});
+
+/* ===== init ===== */
+buildLeft();
+buildTree();
+defaultDetail();
+wireHeader();
+</script>
+</body>
+</html>
