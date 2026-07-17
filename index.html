@@ -3,28 +3,438 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello, world</title>
+  <title>TrueFootage · Workshop</title>
+  <meta name="description" content="An index of internal TrueFootage tools, experiments, and end-of-cycle reports.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    :root {
+      --ink:        #14110d;
+      --ink-2:      #1c1813;
+      --ink-3:      #241f18;
+      --paper:      #f4ede1;
+      --paper-dim:  #b9ac97;
+      --paper-mute: #7d7361;
+      --line:       #352e24;
+      --amber:      #e8a33d;
+      --amber-soft: #f2c27b;
+      --teal:       #4fb0a5;
+      --teal-soft:  #8fd3cb;
+      --rust:       #c9694a;
     }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body { margin: 0; }
+
     body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "IBM Plex Sans", sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Atmospheric background: warm glows + faint blueprint grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(60% 55% at 82% -5%,  rgba(232,163,61,0.16), transparent 60%),
+        radial-gradient(50% 50% at 8% 12%,   rgba(79,176,165,0.13), transparent 60%),
+        radial-gradient(70% 60% at 50% 120%, rgba(201,105,74,0.10), transparent 60%);
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(244,237,225,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244,237,225,0.028) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: radial-gradient(120% 100% at 50% 0%, #000 40%, transparent 92%);
+      -webkit-mask-image: radial-gradient(120% 100% at 50% 0%, #000 40%, transparent 92%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: clamp(3rem, 7vw, 6.5rem) clamp(1.25rem, 5vw, 3.5rem) 5rem;
+    }
+
+    /* ---------- Masthead ---------- */
+    .mast {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding-bottom: 1.4rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--amber);
       display: flex;
       align-items: center;
-      justify-content: center;
-      background: #0d1117;
-      color: #f0f6fc;
+      gap: 0.7rem;
     }
-    h1 {
-      font-size: clamp(2rem, 8vw, 5rem);
-      font-weight: 600;
-      letter-spacing: -0.02em;
+    .brand .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 0 4px rgba(232,163,61,0.16);
+      animation: pulse 3.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 4px rgba(232,163,61,0.16); }
+      50%      { opacity: 0.6; box-shadow: 0 0 0 7px rgba(232,163,61,0); }
+    }
+    .clock {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      color: var(--paper-mute);
+    }
+
+    /* ---------- Hero ---------- */
+    .hero { margin: clamp(2.4rem, 6vw, 4.5rem) 0 clamp(2.6rem, 6vw, 4rem); }
+    .hero h1 {
+      font-family: "Fraunces", serif;
+      font-weight: 380;
+      font-optical-sizing: auto;
+      font-size: clamp(2.9rem, 9vw, 6.4rem);
+      line-height: 0.98;
+      letter-spacing: -0.015em;
+      margin: 0;
+      color: var(--paper);
+    }
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 340;
+      color: var(--amber-soft);
+    }
+    .hero p {
+      max-width: 46ch;
+      margin: 1.6rem 0 0;
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      color: var(--paper-dim);
+    }
+
+    /* ---------- Section headers ---------- */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin: clamp(2.6rem, 5vw, 3.8rem) 0 1.6rem;
+    }
+    .section-head h2 {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--paper);
+      margin: 0;
+      white-space: nowrap;
+    }
+    .section-head .idx { color: var(--teal); }
+    .section-head .rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--line), transparent);
+    }
+    .section-head .count {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--paper-mute);
+      letter-spacing: 0.1em;
+    }
+
+    /* ---------- Tool grid ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .card {
+      position: relative;
+      background: var(--ink-2);
+      padding: 1.7rem 1.6rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 210px;
+      transition: background 0.4s ease, transform 0.4s cubic-bezier(.2,.7,.2,1);
+      isolation: isolate;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(120% 90% at 100% 0%, rgba(232,163,61,0.14), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .card:hover { background: var(--ink-3); }
+    .card:hover::before { opacity: 1; }
+
+    .card .num {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      color: var(--paper-mute);
+    }
+    .card .glyph {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 1.3rem;
+      color: var(--teal);
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      transition: transform 0.4s cubic-bezier(.2,.7,.2,1), color 0.4s ease;
+    }
+    .card:hover .glyph { transform: translate(4px, -4px); color: var(--amber); }
+
+    .card h3 {
+      font-family: "Fraunces", serif;
+      font-weight: 420;
+      font-size: 1.42rem;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      margin: 1.1rem 0 0.55rem;
+      color: var(--paper);
+    }
+    .card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--paper-dim);
+      flex: 1;
+    }
+    .card .tag {
+      margin-top: 1rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--paper-mute);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card .tag::before {
+      content: "";
+      width: 18px; height: 1px;
+      background: var(--teal);
+    }
+
+    /* ---------- Reports rail ---------- */
+    .reports {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.9rem;
+    }
+    .report {
+      position: relative;
+      background: var(--ink-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1.3rem 1.4rem;
+      overflow: hidden;
+      transition: border-color 0.35s ease, transform 0.35s cubic-bezier(.2,.7,.2,1);
+    }
+    .report::after {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--rust);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.35s ease;
+    }
+    .report:hover { border-color: var(--paper-mute); transform: translateY(-3px); }
+    .report:hover::after { transform: scaleY(1); }
+    .report .cyc {
+      font-family: "Fraunces", serif;
+      font-size: 2rem;
+      font-weight: 400;
+      line-height: 1;
+      color: var(--paper);
+    }
+    .report .cyc span { color: var(--rust); font-style: italic; }
+    .report .dates {
+      margin-top: 0.5rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--paper-dim);
+    }
+    .report .kind {
+      margin-top: 0.9rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--paper-mute);
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      margin-top: clamp(3rem, 6vw, 5rem);
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--paper-mute);
+      text-transform: uppercase;
+    }
+
+    /* ---------- Load choreography ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: rise 0.9s cubic-bezier(.2,.7,.2,1) forwards;
+    }
+    @keyframes rise {
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { animation: none; opacity: 1; transform: none; }
+      .brand .dot { animation: none; }
     }
   </style>
 </head>
 <body>
-  <h1>Hello, world</h1>
+  <main class="wrap">
+    <header class="mast reveal" style="animation-delay:.05s">
+      <div class="brand"><span class="dot"></span>TrueFootage · Workshop</div>
+      <div class="clock" id="clock">—</div>
+    </header>
+
+    <section class="hero reveal" style="animation-delay:.15s">
+      <h1>Tools, experiments,<br>&amp; <em>reports</em>.</h1>
+      <p>A working index of the internal apps and end-of-cycle write-ups built around appraisal data, UAD 3.6, and the engineering team.</p>
+    </section>
+
+    <div class="section-head reveal" style="animation-delay:.25s">
+      <h2><span class="idx">01</span> &nbsp;Tools</h2>
+      <span class="rule"></span>
+      <span class="count">5 live</span>
+    </div>
+
+    <section class="grid reveal" style="animation-delay:.32s">
+      <a class="card" href="appraiser-directory/">
+        <span class="num">/ 01</span>
+        <span class="glyph">◎</span>
+        <h3>Appraiser Vendor Explorer</h3>
+        <p>Browse the appraiser vendor network with an interactive US map and filters — drill into any state to compare coverage and volume.</p>
+        <span class="tag">Directory · Map</span>
+      </a>
+
+      <a class="card" href="appraisal-classifications/">
+        <span class="num">/ 02</span>
+        <span class="glyph">⌥</span>
+        <h3>Classification Rules Engine</h3>
+        <p>A data-intake wizard paired with a live logic infographic that shows how property type, loan program, and purpose drive appraisal classification.</p>
+        <span class="tag">Rules · Wizard</span>
+      </a>
+
+      <a class="card" href="uad-fields/">
+        <span class="num">/ 03</span>
+        <span class="glyph">▤</span>
+        <h3>Inspection Field Workbench</h3>
+        <p>UAD 3.6 on-site fields with live conditionality — click any field to inspect its spec detail, dependencies, and enumerations.</p>
+        <span class="tag">UAD 3.6 · Fields</span>
+      </a>
+
+      <a class="card" href="uad-nodes/">
+        <span class="num">/ 04</span>
+        <span class="glyph">⌗</span>
+        <h3>Field Conditionality Graph</h3>
+        <p>An interactive node graph mapping the conditional dependencies between UAD 3.6 fields — trace what triggers what across the URAR.</p>
+        <span class="tag">UAD 3.6 · Graph</span>
+      </a>
+
+      <a class="card" href="schedule/">
+        <span class="num">/ 05</span>
+        <span class="glyph">◷</span>
+        <h3>Engineer Availability Schedule</h3>
+        <p>Team working hours visualized across time zones, so overlaps and hand-offs are obvious at a glance.</p>
+        <span class="tag">Team · Time zones</span>
+      </a>
+
+      <div class="card endcap" aria-hidden="true">
+        <span class="num">/ ∞</span>
+        <div class="endcap-mark">◆</div>
+        <p class="endcap-note">More experiments land here as the team ships them.</p>
+      </div>
+    </section>
+
+    <div class="section-head reveal" style="animation-delay:.4s">
+      <h2><span class="idx">02</span> &nbsp;End-of-Cycle Reports</h2>
+      <span class="rule"></span>
+      <span class="count">4 archived</span>
+    </div>
+
+    <section class="reports reveal" style="animation-delay:.47s">
+      <a class="report" href="end-of-cycle-reports/86/">
+        <div class="cyc">Cycle <span>87</span></div>
+        <div class="dates">Feb 12 – 19, 2026</div>
+        <div class="kind">Latest</div>
+      </a>
+      <a class="report" href="end-of-cycle-reports/84/">
+        <div class="cyc">Cycle <span>84</span></div>
+        <div class="dates">Jan 22 – 29, 2026</div>
+        <div class="kind">Report</div>
+      </a>
+      <a class="report" href="end-of-cycle-reports/83/">
+        <div class="cyc">Cycle <span>83</span></div>
+        <div class="dates">Jan 15 – 22, 2026</div>
+        <div class="kind">Report</div>
+      </a>
+      <a class="report" href="end-of-cycle-reports/82/">
+        <div class="cyc">Cycle <span>82</span></div>
+        <div class="dates">Jan 8 – 15, 2026</div>
+        <div class="kind">Report</div>
+      </a>
+    </section>
+
+    <footer class="reveal" style="animation-delay:.55s">
+      <span>TrueFootage · Internal</span>
+      <span>Static · GitHub Pages</span>
+    </footer>
+  </main>
+
+  <script>
+    // Live UTC clock in the masthead — small ambient detail.
+    const clock = document.getElementById('clock');
+    function tick() {
+      const d = new Date();
+      const p = n => String(n).padStart(2, '0');
+      clock.textContent = `${p(d.getUTCHours())}:${p(d.getUTCMinutes())}:${p(d.getUTCSeconds())} UTC`;
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
 </body>
 </html>
