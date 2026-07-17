@@ -242,6 +242,30 @@
       background: var(--teal);
     }
 
+    .card.endcap {
+      background: transparent;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background-image:
+        repeating-linear-gradient(45deg, rgba(244,237,225,0.02) 0 10px, transparent 10px 20px);
+    }
+    .card.endcap:hover { background: transparent; }
+    .card.endcap::before { display: none; }
+    .card.endcap .num { position: absolute; top: 1.7rem; left: 1.6rem; }
+    .card.endcap .endcap-mark {
+      font-size: 1.1rem;
+      color: var(--paper-mute);
+      opacity: 0.5;
+      margin-bottom: 0.7rem;
+    }
+    .card.endcap .endcap-note {
+      flex: none;
+      max-width: 22ch;
+      font-size: 0.82rem;
+      color: var(--paper-mute);
+    }
+
     /* ---------- Reports rail ---------- */
     .reports {
       display: grid;
