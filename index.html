@@ -242,30 +242,6 @@
       background: var(--teal);
     }
 
-    .card.endcap {
-      background: transparent;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background-image:
-        repeating-linear-gradient(45deg, rgba(244,237,225,0.02) 0 10px, transparent 10px 20px);
-    }
-    .card.endcap:hover { background: transparent; }
-    .card.endcap::before { display: none; }
-    .card.endcap .num { position: absolute; top: 1.7rem; left: 1.6rem; }
-    .card.endcap .endcap-mark {
-      font-size: 1.1rem;
-      color: var(--paper-mute);
-      opacity: 0.5;
-      margin-bottom: 0.7rem;
-    }
-    .card.endcap .endcap-note {
-      flex: none;
-      max-width: 22ch;
-      font-size: 0.82rem;
-      color: var(--paper-mute);
-    }
-
     /* ---------- Reports rail ---------- */
     .reports {
       display: grid;
@@ -363,7 +339,7 @@
     <div class="section-head reveal" style="animation-delay:.25s">
       <h2><span class="idx">01</span> &nbsp;Tools</h2>
       <span class="rule"></span>
-      <span class="count">5 live</span>
+      <span class="count">6 live</span>
     </div>
 
     <section class="grid reveal" style="animation-delay:.32s">
@@ -399,19 +375,21 @@
         <span class="tag">UAD 3.6 · Graph</span>
       </a>
 
-      <a class="card" href="schedule/">
+      <a class="card" href="uad-validate/">
         <span class="num">/ 05</span>
+        <span class="glyph">✓</span>
+        <h3>Data Model Workbench</h3>
+        <p>Run UAD 3.6 validators against GSE test files or a synthetic sample — a ZEN expression engine checks conditionality across full and inspection scopes.</p>
+        <span class="tag">UAD 3.6 · Validate</span>
+      </a>
+
+      <a class="card" href="schedule/">
+        <span class="num">/ 06</span>
         <span class="glyph">◷</span>
         <h3>Engineer Availability Schedule</h3>
         <p>Team working hours visualized across time zones, so overlaps and hand-offs are obvious at a glance.</p>
         <span class="tag">Team · Time zones</span>
       </a>
-
-      <div class="card endcap" aria-hidden="true">
-        <span class="num">/ ∞</span>
-        <div class="endcap-mark">◆</div>
-        <p class="endcap-note">More experiments land here as the team ships them.</p>
-      </div>
     </section>
 
     <div class="section-head reveal" style="animation-delay:.4s">
