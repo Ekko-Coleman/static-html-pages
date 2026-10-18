@@ -1,0 +1,30 @@
+{
+  "name": "fluid-lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-time 3D fluid sandbox in WebGPU, built to show an AI agent loop making it faster at the same accuracy.",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:guard": "node scripts/test-guard.mjs",
+    "check": "npm run typecheck && npm run test && npm run test:guard && npm run build",
+    "machine": "node scripts/machine-info.mjs",
+    "goal": "bash scripts/run-goal.sh",
+    "goal:status": "node scripts/goal-status.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "24.19.2",
+    "@webgpu/types": "0.1.74",
+    "typescript": "7.0.2",
+    "vite": "8.3.4",
+    "vitest": "5.0.5"
+  }
+}

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+results/
+snapshots/
+test-results/
+playwright-report/
+.fluidlab/
+.DS_Store
+*.log
