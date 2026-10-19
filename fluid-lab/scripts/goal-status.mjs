@@ -4,9 +4,9 @@
 // Item markers: [x] done · ~~struck~~ dropped (counts as done) · 👤 Mike only · ⛔ blocked (reason in STATUS.md).
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 export const BUILD_PHASE = ['M0', 'M1', 'M2', 'M3'];
 
@@ -121,4 +121,5 @@ function main() {
   console.log(`RESULT: ${r.result}`);
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
+// Compare resolved paths: Node reports import.meta.url with symlinks resolved, argv[1] as typed.
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) main();

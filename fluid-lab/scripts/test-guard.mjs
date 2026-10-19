@@ -3,20 +3,24 @@
 // Run: npm run test:guard
 
 import { execFileSync, spawnSync } from 'node:child_process';
-import { cpSync, mkdtempSync, rmSync } from 'node:fs';
+import { cpSync, mkdtempSync, realpathSync, rmSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const tmp = mkdtempSync(path.join(tmpdir(), 'fluid-lab-guard-'));
+const tmp = realpathSync(mkdtempSync(path.join(tmpdir(), 'fluid-lab-guard-')));
+// The hook runs through a symlinked project path, as on macOS (/var -> /private/var).
+// File paths below use the real path, so every case also covers mixed symlinked/real paths.
+const link = `${tmp}-link`;
+symlinkSync(tmp, link);
 const git = (...args) => execFileSync('git', ['-c', 'user.name=guard', '-c', 'user.email=guard@test', ...args], { cwd: tmp, stdio: 'ignore' });
-const hook = path.join(tmp, '.claude/hooks/guard.mjs');
+const hook = path.join(link, '.claude/hooks/guard.mjs');
 
 function run(tool_name, tool_input) {
   const r = spawnSync('node', [hook], {
-    input: JSON.stringify({ tool_name, tool_input, cwd: tmp }),
-    env: { ...process.env, CLAUDE_PROJECT_DIR: tmp },
+    input: JSON.stringify({ tool_name, tool_input, cwd: link }),
+    env: { ...process.env, CLAUDE_PROJECT_DIR: link },
     encoding: 'utf8',
   });
   return r.status === 2 ? 'block' : r.status === 0 ? 'allow' : `error(${r.status}): ${r.stderr}`;
@@ -90,6 +94,7 @@ try {
     }
   }
 } finally {
+  rmSync(link, { force: true });
   rmSync(tmp, { recursive: true, force: true });
 }
 

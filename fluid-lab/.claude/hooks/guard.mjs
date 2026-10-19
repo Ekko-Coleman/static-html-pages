@@ -10,9 +10,9 @@
 //   tags           agents may not create `baseline-*` tags. Freezing is Mike's call.
 
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 export const LOCKED_ALWAYS = [
   'GOAL.md',
@@ -88,6 +88,17 @@ export function checkCommand(cmd, state) {
   return null;
 }
 
+// Resolves symlinks (macOS /var -> /private/var), including for files that don't exist yet.
+export function realish(p) {
+  const abs = path.resolve(p);
+  try {
+    return realpathSync(abs);
+  } catch {
+    const parent = path.dirname(abs);
+    return parent === abs ? abs : path.join(realish(parent), path.basename(abs));
+  }
+}
+
 function main() {
   let payload;
   try {
@@ -95,7 +106,7 @@ function main() {
   } catch {
     process.exit(0);
   }
-  const root = process.env.CLAUDE_PROJECT_DIR || payload.cwd || process.cwd();
+  const root = realish(process.env.CLAUDE_PROJECT_DIR || payload.cwd || process.cwd());
   const state = repoState(root);
   const input = payload.tool_input ?? {};
   let reason = null;
@@ -105,7 +116,7 @@ function main() {
   } else {
     const target = input.file_path ?? input.notebook_path;
     if (target) {
-      const rel = path.relative(root, path.resolve(root, target)).split(path.sep).join('/');
+      const rel = path.relative(root, realish(path.resolve(root, target))).split(path.sep).join('/');
       if (!rel.startsWith('..')) reason = checkPath(rel, state);
     }
   }
@@ -117,4 +128,5 @@ function main() {
   process.exit(0);
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
+// Compare resolved paths: Node reports import.meta.url with symlinks resolved, argv[1] as typed.
+if (process.argv[1] && realish(process.argv[1]) === realish(fileURLToPath(import.meta.url))) main();
